@@ -5,7 +5,7 @@ import { SupabaseApi } from "../../data/remote/supabase/supabaseApi.js";
 import { AuthManager } from "./authManager.js";
 import { AuthState } from "./authState.js";
 
-const CLIENT_NAME = "Nuvio Web";
+const CLIENT_NAME = "Tuvora Web";
 const INSTALLATION_ID_KEY = "nuvio_web_installation_id";
 const INSTALLATION_ID_PREFIX = "nuvio-web-";
 const INSTALLATION_ID_LENGTH = 32;

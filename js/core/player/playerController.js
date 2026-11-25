@@ -827,7 +827,7 @@ export const PlayerController = {
       mediaError: this.sanitizePlaybackDiagnosticText(video?.error?.message)
     };
     this.lastHlsErrorDiagnostic = diagnostic;
-    console.warn("[Nuvio playback] hls.js error", JSON.stringify(diagnostic));
+    console.warn("[Tuvora playback] hls.js error", JSON.stringify(diagnostic));
     return diagnostic;
   },
 
@@ -1204,7 +1204,7 @@ export const PlayerController = {
       const retryAttempt = transientLevelNotFoundRetries;
       const retryDelayMs = HLS_TRANSIENT_LEVEL_404_RETRY_BASE_DELAY_MS * retryAttempt;
       clearTransientLevelNotFoundRetry();
-      console.warn("[Nuvio playback] retrying transient HLS level 404", {
+      console.warn("[Tuvora playback] retrying transient HLS level 404", {
         attempt: retryAttempt,
         limit: HLS_TRANSIENT_LEVEL_404_RETRY_LIMIT,
         delayMs: retryDelayMs

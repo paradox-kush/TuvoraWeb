@@ -17,10 +17,12 @@ const partyErrors = {
 
 export function partyCodeFromInput(value) {
   const input = String(value ?? "").trim();
+  const appLink = input.match(/^(?:tuvora|nuvio):\/\/party\/?(?:\?(?:[^\s#]*&)?code=([^\s&#]*)|([^\s/?#]*))/i);
+  if (appLink) return normalizePartyCode(appLink[1] || appLink[2]);
   if (/^https?:\/\//i.test(input)) {
     try {
       const link = new URL(input);
-      if (link.origin !== "https://nuvio.tv") return "";
+      if (!/^(?:www\.)?tuvora\.co$/i.test(link.hostname)) return "";
       return normalizePartyCode(link.pathname.match(/^\/party\/([^/]+)\/?$/)?.[1]);
     } catch {
       return "";
@@ -63,7 +65,7 @@ export function openWatchPartyDialog({ media = null, inPlayer = false, onHosted 
   content.innerHTML = `
     <p class="nuvio-dialog-subtitle" data-party-status role="status"></p>
     <form data-party-join>
-      <label>Room code or Nuvio invite link <input class="watch-party-code" type="text" dir="ltr" maxlength="120"
+      <label>Room code or Tuvora invite link <input class="watch-party-code" type="text" dir="ltr" maxlength="120"
         autocomplete="off" autocapitalize="characters" spellcheck="false" required></label>
       <div class="nuvio-dialog-actions watch-party-actions">
         <button type="submit" class="nuvio-dialog-button">Join party</button>
@@ -243,7 +245,7 @@ export function openWatchPartyDialog({ media = null, inPlayer = false, onHosted 
     event.preventDefault();
     const code = partyCodeFromInput(input.value);
     if (!isValidPartyCode(code)) {
-      status.textContent = "Enter a valid six-character room code or Nuvio invite link.";
+      status.textContent = "Enter a valid six-character room code or Tuvora invite link.";
       input.focus();
       return;
     }

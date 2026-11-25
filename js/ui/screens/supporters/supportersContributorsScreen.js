@@ -324,19 +324,19 @@ export const SupportersContributorsScreen = {
       <section class="supporters-brand-card${this.showDonateQr ? " is-flipped" : ""}" aria-label="${escapeHtml(t("supporters_contributors_title", {}, "Supporters & Contributors"))}">
         <div class="supporters-brand-face supporters-brand-front">
           <div class="supporters-brand-copy">
-            <img class="supporters-brand-logo" src="assets/brand/app_logo_wordmark.png" alt="Nuvio" />
+            <img class="supporters-brand-logo" src="assets/brand/app_logo_wordmark.png" alt="Tuvora" />
             <h1 class="supporters-title">${escapeHtml(t("supporters_contributors_title", {}, "Supporters & Contributors"))}</h1>
-            <p class="supporters-secondary-copy">${escapeHtml(t("supporters_contributors_donate_copy", {}, "Nuvio will stay free and open source. If you want to support the project, you can help cover the time and infrastructure behind it."))}</p>
+            <p class="supporters-secondary-copy">${escapeHtml(t("supporters_contributors_donate_copy", {}, "Tuvora will stay free and open source. If you want to support the project, you can help cover the time and infrastructure behind it."))}</p>
             ${this.renderDonationProgress()}
           </div>
           <button class="supporters-donate-button supporters-focusable focusable" data-focus-key="brand:donate" data-action="showDonateQr">
-            ${escapeHtml(t("supporters_contributors_donate_button", {}, "Donate to Nuvio"))}
+            ${escapeHtml(t("supporters_contributors_donate_button", {}, "Donate to Tuvora"))}
           </button>
         </div>
         <div class="supporters-brand-face supporters-brand-back" aria-hidden="${this.showDonateQr ? "false" : "true"}">
           <div class="supporters-qr-copy">
             <h2>${escapeHtml(t("supporters_contributors_qr_title", {}, "Scan to donate"))}</h2>
-            <p>${escapeHtml(t("supporters_contributors_qr_subtitle", {}, "Open the link on your phone and support Nuvio through Ko-fi."))}</p>
+            <p>${escapeHtml(t("supporters_contributors_qr_subtitle", {}, "Open the link on your phone and support Tuvora through Ko-fi."))}</p>
           </div>
           <canvas class="supporters-donate-qr" data-qr-content="${escapeHtml(donateUrl)}" aria-label="${escapeHtml(t("cd_donation_qr", {}, "Donation QR code"))}"></canvas>
           <button class="supporters-back-button supporters-focusable focusable" data-focus-key="brand:back" data-action="hideDonateQr">
@@ -592,7 +592,7 @@ export const SupportersContributorsScreen = {
         <div class="supporters-dialog-person-row">
           ${this.renderNameAvatar(sponsor.name)}
           <div>
-            <p>${escapeHtml(t("sponsors_detail_copy", {}, "Sponsors help move Nuvio forward through support across the different parts of development."))}</p>
+            <p>${escapeHtml(t("sponsors_detail_copy", {}, "Sponsors help move Tuvora forward through support across the different parts of development."))}</p>
             ${sponsor.channelUrl ? `<small>${escapeHtml(sponsor.channelUrl)}</small>` : ""}
           </div>
         </div>

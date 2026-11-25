@@ -5,7 +5,13 @@ import { partyCodeFromInput, partyStreamParams } from "./watchPartyDialog.js";
 import { mediaKeyOf, PartyEventType } from "../../../core/party/partyModels.js";
 
 test("party invite opens the host episode through local addon selection", () => {
-  assert.equal(partyCodeFromInput("https://nuvio.tv/party/ABC234"), "ABC234");
+  assert.equal(partyCodeFromInput("https://tuvora.co/party/ABC234"), "ABC234");
+  assert.equal(partyCodeFromInput("https://www.tuvora.co/party/ABC234"), "ABC234");
+  assert.equal(partyCodeFromInput("tuvora://party/ABC234"), "ABC234");
+  assert.equal(partyCodeFromInput("nuvio://party/ABC234"), "ABC234");
+  assert.equal(partyCodeFromInput("tuvora://party?code=ABC234"), "ABC234");
+  assert.equal(partyCodeFromInput("ABC234"), "ABC234");
+  assert.equal(partyCodeFromInput("https://nuvio.tv/party/ABC234"), "");
   assert.equal(partyCodeFromInput("https://example.org/party/ABC234"), "");
   const media = { meta_type: "series", meta_id: "tt123", season: 1, episode: 2, source: { url: "private" } };
   const params = partyStreamParams(media);

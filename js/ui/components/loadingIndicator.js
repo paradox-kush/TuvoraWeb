@@ -14,7 +14,7 @@ export function renderLogoLoadingMarkup(options = {}) {
   const label = String(options?.label || "Loading").trim() || "Loading";
   return `
     <div class="app-loading-screen${className ? ` ${escapeAttribute(className)}` : ""}" aria-label="${escapeAttribute(label)}">
-      <img src="${APP_LOADING_LOGO_SRC}" class="app-loading-logo" alt="Nuvio" />
+      <img src="${APP_LOADING_LOGO_SRC}" class="app-loading-logo" alt="Tuvora" />
     </div>
   `;
 }

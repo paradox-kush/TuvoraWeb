@@ -94,7 +94,7 @@ export function showAppUpdatePrompt(update, { documentRef = globalThis.document 
     title: t("update_title", "App Update"),
     subtitle: t(
       "update_installer_required",
-      "Use Nuvio WebTV Installer to update the app on your TV."
+      "Use Tuvora Installer to update the app on your TV."
     ),
     widthVw: 52.1,
     panelClassName: "app-update-dialog",

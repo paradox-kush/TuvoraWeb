@@ -40,9 +40,9 @@ export const ExperienceModeSelectionScreen = {
     const isLayout = this.step === "layout";
     this.container.innerHTML = `
       <main class="experience-mode-screen">
-        <img class="experience-mode-logo" src="assets/brand/app_logo_wordmark.png" alt="Nuvio" />
-        <h1>${escapeHtml(isLayout ? t("layout_selection_welcome", "Welcome to Nuvio") : t("experience_mode_choose_title", "Choose your Nuvio experience"))}</h1>
-        <p>${escapeHtml(isLayout ? t("layout_selection_subtitle", "Choose how Nuvio should look on your TV.") : t("experience_mode_choose_subtitle", "Start simple or unlock every customization. You can switch anytime."))}</p>
+        <img class="experience-mode-logo" src="assets/brand/app_logo_wordmark.png" alt="Tuvora" />
+        <h1>${escapeHtml(isLayout ? t("layout_selection_welcome", "Welcome to Tuvora") : t("experience_mode_choose_title", "Choose your Tuvora experience"))}</h1>
+        <p>${escapeHtml(isLayout ? t("layout_selection_subtitle", "Choose how Tuvora should look on your TV.") : t("experience_mode_choose_subtitle", "Start simple or unlock every customization. You can switch anytime."))}</p>
         <div class="experience-mode-options ${isLayout ? "is-layout" : ""}">
           ${isLayout
             ? LAYOUTS.map((layout, index) => `<button class="experience-mode-card focusable" data-index="${index}" data-layout="${layout.id}"><strong>${escapeHtml(t(layout.key, layout.fallback))}</strong></button>`).join("")

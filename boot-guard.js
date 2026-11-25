@@ -32,7 +32,7 @@
     card.style.cssText = "width:100%;max-width:760px;text-align:center;";
     var title = document.createElement("div");
     title.style.cssText = "font-size:clamp(28px,5vw,44px);line-height:1.15;font-weight:700;margin-bottom:22px;";
-    title.textContent = "Nuvio could not start";
+    title.textContent = "Tuvora could not start";
     var description = document.createElement("div");
     description.style.cssText = "font-size:18px;line-height:1.45;color:#c9c9c9;margin:0 auto 24px;";
     description.textContent = text(message);

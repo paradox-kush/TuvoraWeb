@@ -65,9 +65,9 @@ test("About renders independent fork identity and quiet community fallbacks", as
   const source = await settingsScreenSource();
 
   assert.match(source, /Version \$\{escapeHtml\(APP_IDENTITY\.version\)\}/);
-  assert.match(source, /Based on alphasquare404's NuvioWeb, with selected mobile improvements from NurvX/);
+  assert.match(source, /Tuvora for the web\. Based on alphasquare404's and falcononrails' NuvioWeb, with selected mobile improvements from NurvX/);
+  assert.doesNotMatch(source, /nuvioweb\.space uses Umami/);
   assert.match(source, /Maintained by \$\{escapeHtml\(APP_IDENTITY\.maintainer\)\}/);
-  assert.match(source, /Independent community fork with browser playback improvements and an optional playback server/);
   assert.match(source, /title: "View Contributors on GitHub"/);
   assert.match(source, /hasDesktopSupporterSource\(\)/);
   assert.doesNotMatch(source, /Contributors API is not configured\.|Unable to load supporters\./);

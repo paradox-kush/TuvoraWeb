@@ -85,12 +85,12 @@ export const AuthSignInScreen = {
     this.container.innerHTML = `
       <main class="desktop-auth-shell">
         <aside class="desktop-auth-brand">
-          <img src="assets/brand/app_logo_wordmark.png" alt="Nuvio" />
+          <img src="assets/brand/app_logo_wordmark.png" alt="Tuvora" />
         </aside>
         <div class="desktop-auth-pane">
         <section class="desktop-auth-card" aria-labelledby="desktop-auth-title">
           <h1 id="desktop-auth-title" class="desktop-auth-title">Welcome back</h1>
-          <p class="desktop-auth-subtitle">Sign in with your existing Nuvio account.</p>
+          <p class="desktop-auth-subtitle">Sign in with your existing Tuvora account.</p>
           <form class="desktop-auth-form" aria-busy="${submitting}">
             <label class="desktop-auth-field" for="desktop-auth-email">
               <span>${escapeHtml(I18n.t("auth.signIn.emailPrompt"))}</span>

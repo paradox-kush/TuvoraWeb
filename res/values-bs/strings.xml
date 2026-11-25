@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Nuvio</string>
+    <string name="app_name">Tuvora</string>
     <string name="type_movie">Film</string>
     <string name="type_series">Serija</string>
     <string name="type_unknown">Nepoznato</string>
@@ -292,12 +292,12 @@
     <string name="action_none">Ništa</string>
     <string name="action_close">Zatvori</string>
     <string name="supporters_contributors_title">Podržavaoci i Saradnici</string>
-    <string name="supporters_contributors_subtitle">Ljudi koji podržavaju Nuvio i saradnici koji ga grade na TV-u i mobilnim uređajima.</string>
+    <string name="supporters_contributors_subtitle">Ljudi koji podržavaju Tuvora i saradnici koji ga grade na TV-u i mobilnim uređajima.</string>
     <string name="supporters_contributors_supporters_copy">Podržavaoci i donatori pomažu da projekat napreduje, finansiraju infrastrukturu i ostavljaju prostor za ambiciozne funkcije.</string>
-    <string name="supporters_contributors_donate_copy">Nuvio će ostati besplatan i open source. Ako želite podržati projekt, možete pomoći u pokrivanju vremena i infrastrukture koja stoji iza njega.</string>
-    <string name="supporters_contributors_donate_button">Donirajte za Nuvio</string>
+    <string name="supporters_contributors_donate_copy">Tuvora će ostati besplatan i open source. Ako želite podržati projekt, možete pomoći u pokrivanju vremena i infrastrukture koja stoji iza njega.</string>
+    <string name="supporters_contributors_donate_button">Donirajte za Tuvora</string>
     <string name="supporters_contributors_qr_title">Skenirajte za donaciju</string>
-    <string name="supporters_contributors_qr_subtitle">Otvorite link na telefonu i podržite Nuvio putem Ko-fi.</string>
+    <string name="supporters_contributors_qr_subtitle">Otvorite link na telefonu i podržite Tuvora putem Ko-fi.</string>
     <string name="supporters_contributors_qr_hint">Usmjerite kameru na QR kod ili koristite dugme ispod.</string>
     <string name="supporters_contributors_back_button">Nazad na detalje</string>
     <string name="supporters_tab">Podržavaoci</string>
@@ -353,8 +353,8 @@
     <string name="playback_resolution_matching_sub">Dozvoli promjene načina prikaza kako bi odgovaralo rezoluciji videa.</string>
     <string name="playback_player_external_desc">Uvijek otvaraj streamove u vanjskoj aplikaciji</string>
     <string name="playback_player_ask_desc">Odaberi player svaki put</string>
-    <string name="playback_engine_exoplayer_desc">Najbolja kompatibilnost sa trenutnim Nuvio funkcijama.</string>
-    <string name="playback_engine_mvplayer_desc">Koristi libmpv sa Nuvio OSD kontrolama. Eksperimentalno.</string>
+    <string name="playback_engine_exoplayer_desc">Najbolja kompatibilnost sa trenutnim Tuvora funkcijama.</string>
+    <string name="playback_engine_mvplayer_desc">Koristi libmpv sa Tuvora OSD kontrolama. Eksperimentalno.</string>
     <string name="audio_trailer_section">Trailer</string>
     <string name="audio_autoplay_trailers">Automatski Pusti Trailere</string>
     <string name="audio_autoplay_trailers_sub">Automatski pusti trailere na ekranu sa detaljima nakon perioda neaktivnosti</string>
@@ -653,13 +653,13 @@
     <string name="trakt_watch_progress_title">Napredak Gledanja</string>
     <string name="trakt_watch_progress_subtitle">Odaberi koji izvor napretka upravlja opcijama nastavi i nastavi gledati</string>
     <string name="trakt_watch_progress_dialog_title">Napredak Gledanja</string>
-    <string name="trakt_watch_progress_dialog_subtitle">Odaberi da li nastavi i nastavi gledati treba da koriste Trakt ili Nuvio Sync, dok Trakt scrobble ostaje aktivan.</string>
+    <string name="trakt_watch_progress_dialog_subtitle">Odaberi da li nastavi i nastavi gledati treba da koriste Trakt ili Tuvora Sync, dok Trakt scrobble ostaje aktivan.</string>
     <string name="trakt_watch_progress_source_trakt">Trakt</string>
-    <string name="trakt_watch_progress_source_nuvio">Nuvio Sync</string>
+    <string name="trakt_watch_progress_source_nuvio">Tuvora Sync</string>
     <string name="trakt_setting_on">Uključeno</string>
     <string name="trakt_setting_off">Isključeno</string>
     <string name="trakt_watch_progress_trakt_selected">Izvor napretka gledanja postavljen na Trakt</string>
-    <string name="trakt_watch_progress_nuvio_selected">Izvor napretka gledanja postavljen na Nuvio Sync</string>
+    <string name="trakt_watch_progress_nuvio_selected">Izvor napretka gledanja postavljen na Tuvora Sync</string>
     <string name="trakt_continue_watching_window">Prozor za Nastavi Gledati</string>
     <string name="trakt_continue_watching_subtitle">Trakt historija koja se uzima u obzir za nastavi gledati</string>
     <string name="trakt_unaired_next_up">Neemitovane Sljedeće Epizode</string>
@@ -784,7 +784,7 @@
     <string name="profile_pin_overlay_set_support">Ovaj PIN će biti potreban prije otvaranja ovog profila.</string>
     <string name="profile_pin_overlay_confirm_support">Ponovo unesi iste 4 cifre da završiš podešavanje.</string>
     <string name="profile_pin_overlay_mismatch">PIN-ovi se ne poklapaju. Ponovo unesi novi PIN.</string>
-    <string name="profile_pin_overlay_forgot_hint">Zaboravljen PIN? Resetuj ga sa svog Nuvio računa na Nuvio web stranici.</string>
+    <string name="profile_pin_overlay_forgot_hint">Zaboravljen PIN? Resetuj ga sa svog Tuvora računa na Tuvora web stranici.</string>
     <string name="profile_pin_overlay_back_hint">Pritisni nazad za otkazivanje</string>
     <string name="addon_title">Addoni</string>
     <string name="addon_readonly_notice">Koriste se addoni primarnog profila i ne mogu se mijenjati</string>
@@ -829,7 +829,7 @@
     <string name="stream_type_torrent">Torrent</string>
     <string name="stream_type_youtube">YouTube</string>
     <string name="p2p_consent_title">P2P Streaming</string>
-    <string name="p2p_consent_body">Ovaj stream koristi peer-to-peer (P2P) tehnologiju. Omogućavanjem P2P-a, slažete se sa sljedećim:\n\n• Vaša IP adresa će biti vidljiva drugim učesnicima u mreži\n• Vi ste isključivo odgovorni za sadržaj kojem pristupate\n• Potvrđujete da imate zakonsko pravo streamati ovaj sadržaj u vašoj državi\n• Nuvio ne hosta, ne distribuira i ne kontroliše bilo kakav P2P sadržaj\n• Nuvio ne snosi odgovornost za bilo kakve pravne posljedice koje proizilaze iz vašeg korištenja P2P streaminga\n\nOvu funkciju koristite u potpunosti na vlastiti rizik. P2P možete isključiti bilo kada u Postavkama.</string>
+    <string name="p2p_consent_body">Ovaj stream koristi peer-to-peer (P2P) tehnologiju. Omogućavanjem P2P-a, slažete se sa sljedećim:\n\n• Vaša IP adresa će biti vidljiva drugim učesnicima u mreži\n• Vi ste isključivo odgovorni za sadržaj kojem pristupate\n• Potvrđujete da imate zakonsko pravo streamati ovaj sadržaj u vašoj državi\n• Tuvora ne hosta, ne distribuira i ne kontroliše bilo kakav P2P sadržaj\n• Tuvora ne snosi odgovornost za bilo kakve pravne posljedice koje proizilaze iz vašeg korištenja P2P streaminga\n\nOvu funkciju koristite u potpunosti na vlastiti rizik. P2P možete isključiti bilo kada u Postavkama.</string>
     <string name="p2p_consent_enable">Omogući P2P</string>
     <string name="p2p_consent_cancel">Otkaži</string>
     <string name="settings_p2p_title">P2P Streaming</string>
@@ -1144,11 +1144,11 @@
     <string name="catalog_see_all_from">od %1$s</string>
     <string name="catalog_see_all_empty_title">Nema dostupnih stavki</string>
     <string name="catalog_see_all_empty_subtitle">Pokušaj sa drugim katalogom ili provjeri kasnije</string>
-    <string name="layout_selection_welcome">Dobrodošli u Nuvio</string>
+    <string name="layout_selection_welcome">Dobrodošli u Tuvora</string>
     <string name="layout_selection_subtitle">Odaberi raspored početnog ekrana</string>
     <string name="layout_selection_continue">Nastavi</string>
     <string name="update_title">Ažuriranje Aplikacije</string>
-    <string name="update_installer_required">Koristite Nuvio WebTV Installer za ažuriranje aplikacije na TV-u.</string>
+    <string name="update_installer_required">Koristite Tuvora Installer za ažuriranje aplikacije na TV-u.</string>
     <string name="update_release_notes">Šta je novo</string>
     <string name="update_release_notes_unavailable">Opis izdanja nije dostupan.</string>
     <string name="update_downloading">Preuzimanje ažuriranja</string>
@@ -1156,7 +1156,7 @@
     <string name="update_downloading_ellipsis">Preuzimanje…</string>
     <string name="update_unknown_sources">Dozvoli instalacije iz nepoznatih izvora da bi nastavio/la.</string>
     <string name="account_title">Račun</string>
-    <string name="account_sign_in_description">Prijavi se za sinhronizaciju biblioteke, napretka gledanja, addona i plugina na svim uređajima. Sinhronizacija biblioteke koristi Nuvio Sync kada Trakt nije povezan, a napredak gledanja može koristiti i Trakt i Nuvio Sync.</string>
+    <string name="account_sign_in_description">Prijavi se za sinhronizaciju biblioteke, napretka gledanja, addona i plugina na svim uređajima. Sinhronizacija biblioteke koristi Tuvora Sync kada Trakt nije povezan, a napredak gledanja može koristiti i Trakt i Tuvora Sync.</string>
     <string name="account_sync_code_title">Sync Kod</string>
     <string name="account_sync_code_description">Sinhronizuj uređaje bez kreiranja računa.</string>
     <string name="account_linked_devices">Povezani Uređaji (%1$d)</string>
@@ -1280,7 +1280,7 @@
     <string name="cd_preview">Pregled</string>
     <string name="cd_test">Testiraj</string>
     <string name="cd_unlink">Odspoji</string>
-    <string name="cd_nuvio_logo">NuvioTV</string>
+    <string name="cd_nuvio_logo">Tuvora</string>
     <string name="cd_trakt_logo">Trakt Logo</string>
     <string name="cd_trakt_qr">Trakt QR za aktivaciju</string>
     <string name="cd_imdb">IMDb</string>
@@ -1291,7 +1291,7 @@
     <string name="cd_expand">Proširi %1$s</string>
     <string name="cd_collapse">Skupi %1$s</string>
     <string name="cd_qr_login">QR kod za prijavu</string>
-    <string name="cd_nuvio">Nuvio</string>
+    <string name="cd_nuvio">Tuvora</string>
     <string name="debug_signin_success">Uspješno prijavljeno</string>
     <string name="debug_generate_description">Debug generisana stavka %1$s broj %2$d</string>
     <string name="debug_generate_result_failed">Nije uspjelo: %1$s</string>
@@ -1381,7 +1381,7 @@
     <string name="autoplay_reuse_binge_group">Ponovo koristi Binge grupu</string>
     <string name="autoplay_reuse_binge_group_sub">Zapamti i ponovo koristi zadnju Binge grupu između sesija (Nastavi gledati, Detalji itd.).</string>
     <string name="unsupported_device_title">TV nije podržan</string>
-    <string name="unsupported_device_message">Ovaj TV ne ispunjava minimalne zahtjeve za ovu verziju aplikacije Nuvio TV.</string>
+    <string name="unsupported_device_message">Ovaj TV ne ispunjava minimalne zahtjeve za ovu verziju aplikacije Tuvora.</string>
     <string name="unsupported_device_current_platform">Trenutna platforma</string>
     <string name="unsupported_device_current_firmware">Trenutni firmver</string>
     <string name="unsupported_device_required_platform">Potrebna platforma</string>
@@ -1411,7 +1411,7 @@
     <string name="debrid_device_auth_expired">Ovaj kod je istekao. Pokušajte ponovo.</string>
     <string name="debrid_device_auth_failed">Nije moguće pokrenuti prijavu.</string>
     <string name="debrid_device_auth_connected">%1$s je povezan na ovom uređaju.</string>
-    <string name="debrid_device_auth_instructions">Skenirajte QR kod i unesite ovaj kod da odobrite Nuvio.</string>
+    <string name="debrid_device_auth_instructions">Skenirajte QR kod i unesite ovaj kod da odobrite Tuvora.</string>
     <string name="debrid_device_auth_missing_configuration">Ovaj način prijave nije konfiguriran u ovoj verziji.</string>
     <string name="debrid_disconnect">Prekini vezu</string>
     <string name="debrid_connected">Povezano</string>

@@ -10,12 +10,12 @@ test("application metadata supplies the independent fork version and repository 
   assert.equal(metadata.version, packageJson.version);
   assert.equal(metadata.identity.version, packageJson.version);
   assert.equal(metadata.identity.upstreamVersion, "0.3.35");
-  assert.equal(metadata.identity.maintainer, "falcononrails");
-  assert.equal(metadata.identity.sourceRepositoryUrl, "https://github.com/falcononrails/NuvioWeb");
-  assert.equal(metadata.identity.issuesUrl, "https://github.com/falcononrails/NuvioWeb/issues");
+  assert.equal(metadata.identity.maintainer, "Tuvora");
+  assert.equal(metadata.identity.sourceRepositoryUrl, "https://github.com/paradox-kush/TuvoraWeb");
+  assert.equal(metadata.identity.issuesUrl, "https://github.com/paradox-kush/TuvoraWeb/issues");
   assert.equal(
     metadata.identity.latestReleaseUrl,
-    "https://api.github.com/repos/falcononrails/NuvioWeb/releases/latest"
+    "https://api.github.com/repos/paradox-kush/TuvoraWeb/releases/latest"
   );
 });
 

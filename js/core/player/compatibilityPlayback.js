@@ -3,7 +3,7 @@ import { SessionStore } from "../storage/sessionStore.js";
 
 export async function requestCompatibilityPlayback(path = "", data = {}) {
   if (SessionStore.isAnonymousSession || !(await AuthManager.refreshSessionIfNeeded())) {
-    throw new Error("Sign in to Nuvio to use compatibility playback.");
+    throw new Error("Sign in to Tuvora to use compatibility playback.");
   }
   const send = () => fetch(`/api/playback/sessions${path}`, {
     method: "POST",

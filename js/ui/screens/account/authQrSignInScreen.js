@@ -47,7 +47,7 @@ export const AuthQrSignInScreen = {
         }
         <section class="qr-left-panel">
           <div class="qr-brand-lockup">
-            <img src="assets/brand/app_logo_wordmark.png" class="qr-logo" alt="Nuvio" />
+            <img src="assets/brand/app_logo_wordmark.png" class="qr-logo" alt="Tuvora" />
           </div>
 
           <div class="qr-copy-block">

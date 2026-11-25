@@ -1,18 +1,18 @@
 /* global __NUVIO_APP_IDENTITY__ */
 
 const FALLBACK_IDENTITY = {
-  name: "NuvioWeb",
+  name: "Tuvora Web",
   version: "0.0.0",
   channel: "development",
   revision: "",
   upstreamVersion: "0.3.35",
-  maintainer: "falcononrails",
-  sourceRepositoryUrl: "https://github.com/falcononrails/NuvioWeb",
-  issuesUrl: "https://github.com/falcononrails/NuvioWeb/issues",
-  contributorsUrl: "https://github.com/falcononrails/NuvioWeb/graphs/contributors",
-  licenseUrl: "https://github.com/falcononrails/NuvioWeb/blob/nightly/LICENSE",
+  maintainer: "Tuvora",
+  sourceRepositoryUrl: "https://github.com/paradox-kush/TuvoraWeb",
+  issuesUrl: "https://github.com/paradox-kush/TuvoraWeb/issues",
+  contributorsUrl: "https://github.com/paradox-kush/TuvoraWeb/graphs/contributors",
+  licenseUrl: "https://github.com/paradox-kush/TuvoraWeb/blob/main/LICENSE",
   upstreamRepositoryUrl: "https://github.com/alphasquare404/NuvioWeb",
-  latestReleaseUrl: "https://api.github.com/repos/falcononrails/NuvioWeb/releases/latest"
+  latestReleaseUrl: "https://api.github.com/repos/paradox-kush/TuvoraWeb/releases/latest"
 };
 
 function text(value, fallback = "") {

@@ -1,7 +1,7 @@
 import { Platform } from "../../platform/index.js";
 import { trackBrowserScreen } from "./browserAnalytics.js";
 
-const APP_TITLE = "Nuvio";
+const APP_TITLE = "Tuvora";
 
 const ROUTE_TITLES = {
   home: "",

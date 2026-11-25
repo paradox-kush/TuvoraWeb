@@ -136,7 +136,7 @@ const SETTINGS_RAIL_SCROLL_STIFFNESS = 180;
 const SETTINGS_RAIL_SCROLL_DAMPING_RATIO = 0.95;
 const SETTINGS_MARQUEE_VELOCITY_PX_PER_SECOND = 90; // ATV 45dp/s -> 90px/s
 const CURRENT_APP_VERSION = APP_IDENTITY.version;
-const PRIVACY_URL = "https://nuvio.tv/privacy-policy";
+const PRIVACY_URL = "https://tuvora.co/privacy";
 
 function isDesktopSettingsBrowser() {
   return Platform.isBrowser();
@@ -3372,10 +3372,10 @@ export const SettingsScreen = {
           ${
             !loading && !signedIn
               ? `
-            <p class="settings-account-description">${escapeHtml(isDesktopBrowser ? "Access your Nuvio profiles, addons, collections, library and watch progress." : t("account_sync_description", {}, "Sync your library, watch progress, addons, and plugins across devices."))}</p>
+            <p class="settings-account-description">${escapeHtml(isDesktopBrowser ? "Access your Tuvora profiles, addons, collections, library and watch progress." : t("account_sync_description", {}, "Sync your library, watch progress, addons, and plugins across devices."))}</p>
             <p class="settings-account-inline-note">${escapeHtml(
               isDesktopBrowser
-                ? "Use your existing Nuvio account. Trakt authorization is separate."
+                ? "Use your existing Tuvora account. Trakt authorization is separate."
                 : t(
                     "account_sync_restart_note",
                     {},
@@ -3419,7 +3419,7 @@ export const SettingsScreen = {
             ${this.renderAccountStatusCard(model.accountEmail || t("settings.status.linkedFallback", {}, "Linked account"))}
             <p class="settings-account-inline-note">${escapeHtml(
               isDesktopBrowser
-                ? "Your Nuvio profile is connected. Some settings are specific to this app; Trakt authorization is separate."
+                ? "Your Tuvora profile is connected. Some settings are specific to this app; Trakt authorization is separate."
                 : t(
                     "account_sync_restart_note",
                     {},
@@ -3487,7 +3487,7 @@ export const SettingsScreen = {
     } catch (_) { /* An unconfigured build has no backend to label. */ }
     if (!origin) return "";
     return `<div class="settings-account-inline-note settings-account-backend">
-      <strong>${origin === "https://api.nuvio.tv" ? "Official Nuvio account backend" : "Account backend"}</strong>
+      <strong>${origin === "https://qsonncwknzdixurjyqap.supabase.co" ? "Tuvora account" : "Account backend"}</strong>
       <span>${escapeHtml(origin)}</span>
       <span>Used for sign-in and synced profiles. This community web app and its playback service are maintained independently.</span>
     </div>`;
@@ -7601,7 +7601,7 @@ export const SettingsScreen = {
           this.traktStatusMessage =
             option.id === TraktLibrarySourceMode.TRAKT
               ? t("trakt_library_source_trakt_selected", {}, "Trakt library selected")
-              : t("trakt_library_source_nuvio_selected", {}, "Nuvio library selected");
+              : t("trakt_library_source_nuvio_selected", {}, "Tuvora library selected");
         }
       });
     });
@@ -7620,7 +7620,7 @@ export const SettingsScreen = {
               : t(
                   "trakt_watch_progress_nuvio_selected",
                   {},
-                  "Watch progress source set to Nuvio Sync"
+                  "Watch progress source set to Tuvora Sync"
                 );
         }
       });
@@ -7939,12 +7939,12 @@ export const SettingsScreen = {
       this.startDesktopTraktPolling();
     }
     const librarySources = [
-      { id: TraktLibrarySourceMode.LOCAL, label: "Nuvio" },
+      { id: TraktLibrarySourceMode.LOCAL, label: "Tuvora" },
       ...(traktConnected ? [{ id: TraktLibrarySourceMode.TRAKT, label: "Trakt" }] : []),
       ...(simklConnected ? [{ id: TraktLibrarySourceMode.SIMKL, label: "Simkl" }] : [])
     ];
     const progressSources = [
-      { id: WatchProgressSource.NUVIO_SYNC, label: "Nuvio Sync" },
+      { id: WatchProgressSource.NUVIO_SYNC, label: "Tuvora Sync" },
       ...(traktConnected ? [{ id: WatchProgressSource.TRAKT, label: "Trakt" }] : []),
       ...(simklConnected ? [{ id: WatchProgressSource.SIMKL, label: "Simkl" }] : [])
     ];
@@ -7956,7 +7956,7 @@ export const SettingsScreen = {
       this.desktopTraktErrorMessage = null;
       try {
         await TraktAuthService.startDeviceAuth();
-        this.desktopTraktStatusMessage = "Enter the code on Trakt to approve Nuvio.";
+        this.desktopTraktStatusMessage = "Enter the code on Trakt to approve Tuvora.";
         this.desktopTrackingExpanded = { ...this.desktopTrackingExpanded, trakt: true };
         this.startDesktopTraktPolling();
       } catch (error) {
@@ -8109,7 +8109,7 @@ export const SettingsScreen = {
       : simklWaiting
         ? `<div class="settings-tracking-activation">
              <div class="settings-row-title">Enter this code on Simkl</div>
-             <p class="settings-row-subtitle">Open Simkl PIN and enter this code to approve Nuvio. This section updates automatically.</p>
+             <p class="settings-row-subtitle">Open Simkl PIN and enter this code to approve Tuvora. This section updates automatically.</p>
              <code class="settings-tracking-activation-code">${escapeHtml(simkl.userCode || "-")}</code>
              <div class="settings-tracking-activation-url">${escapeHtml(activationUrl)}</div>
              <div class="settings-tracking-inline-actions">
@@ -8126,7 +8126,7 @@ export const SettingsScreen = {
       : traktWaiting
         ? `<div class="settings-tracking-activation">
              <div class="settings-row-title">Enter this code on Trakt</div>
-             <p class="settings-row-subtitle">Open Trakt activation and enter this code to approve Nuvio.</p>
+             <p class="settings-row-subtitle">Open Trakt activation and enter this code to approve Tuvora.</p>
              <code class="settings-tracking-activation-code">${escapeHtml(trakt.userCode || "-")}</code>
              <div class="settings-tracking-activation-url">${escapeHtml(trakt.verificationUrl || "https://trakt.tv/activate")}</div>
              <div class="settings-tracking-inline-actions">
@@ -8140,8 +8140,8 @@ export const SettingsScreen = {
           : `<p class="settings-row-subtitle">Connect Trakt to sync lists, watched history, playback progress, and scrobbles.</p>
              ${inlineButton("tracking:desktop:trakt:connect", "Connect Trakt")}`;
     const behaviorBody = `
-      ${this.renderActionRow({ focusKey: "tracking:desktop:library", title: "Library source", subtitle: "Choose the service Nuvio reads for your Library.", value: librarySources.find((item) => item.id === settings.librarySourceMode)?.label || "Nuvio" })}
-      ${this.renderActionRow({ focusKey: "tracking:desktop:progress", title: "Watch progress source", subtitle: "Choose the service Nuvio reads for resume and Continue Watching.", value: progressSources.find((item) => item.id === settings.watchProgressSource)?.label || "Nuvio Sync" })}
+      ${this.renderActionRow({ focusKey: "tracking:desktop:library", title: "Library source", subtitle: "Choose the service Tuvora reads for your Library.", value: librarySources.find((item) => item.id === settings.librarySourceMode)?.label || "Tuvora" })}
+      ${this.renderActionRow({ focusKey: "tracking:desktop:progress", title: "Watch progress source", subtitle: "Choose the service Tuvora reads for resume and Continue Watching.", value: progressSources.find((item) => item.id === settings.watchProgressSource)?.label || "Tuvora Sync" })}
       ${traktConnected ? this.renderActionRow({ focusKey: "tracking:desktop:cw", title: "Continue Watching window", subtitle: "Trakt history considered for Continue Watching.", value: settings.continueWatchingDaysCap === 0 ? "All history" : `${settings.continueWatchingDaysCap} days` }) : ""}
       ${traktConnected ? this.renderToggleRow({ focusKey: "tracking:desktop:comments", title: "Trakt comments", subtitle: "Show Trakt reviews on metadata pages.", checked: Boolean(settings.showMetaComments) }) : ""}
       ${traktConnected ? this.renderActionRow({ focusKey: "tracking:desktop:related", title: "More Like This source", subtitle: "Choose related titles from Trakt or TMDB.", value: settings.moreLikeThisSource === MoreLikeThisSourcePreference.TMDB ? "TMDB" : "Trakt" }) : ""}
@@ -8312,7 +8312,7 @@ export const SettingsScreen = {
     this.actionMap.set("about:issues", () => openExternalUrl(APP_IDENTITY.issuesUrl));
     this.actionMap.set("about:upstream", () => openExternalUrl(APP_IDENTITY.upstreamRepositoryUrl));
     this.actionMap.set("about:license", () => openExternalUrl(APP_IDENTITY.licenseUrl));
-    this.actionMap.set("about:website", () => openExternalUrl("https://nuvioweb.space/"));
+    this.actionMap.set("about:website", () => openExternalUrl("https://tuvora.co/"));
     this.actionMap.set("about:changes", () => openExternalUrl(`${APP_IDENTITY.sourceRepositoryUrl}/commits/${APP_IDENTITY.revision || "nightly"}/`));
     this.actionMap.set("about:releases", () => openExternalUrl(`${APP_IDENTITY.sourceRepositoryUrl}/releases`));
     this.actionMap.set("about:credits", () => openExternalUrl(`${APP_IDENTITY.sourceRepositoryUrl}#credits-and-license`));
@@ -8359,15 +8359,13 @@ export const SettingsScreen = {
           <h2 class="settings-about-name">${escapeHtml(APP_IDENTITY.name)}</h2>
           <p class="settings-about-copy">${escapeHtml({ nightly: "Nightly", beta: "Beta", stable: "Stable", development: "Development" }[APP_IDENTITY.channel])} · Version ${escapeHtml(APP_IDENTITY.version)}${APP_IDENTITY.revision ? ` · ${escapeHtml(APP_IDENTITY.revision.slice(0, 7))}` : ""}</p>
           <p class="settings-about-copy">Maintained by ${escapeHtml(APP_IDENTITY.maintainer)}.</p>
-          <p class="settings-about-copy">Based on alphasquare404's NuvioWeb, with selected mobile improvements from NurvX and original work by NuvioMedia, Tapframe, WhiteGiso, edoedac0 and their contributors.</p>
-          <p class="settings-about-copy">Independent community fork with browser playback improvements and an optional playback server. Native Trakt requires the host's own app credentials.</p>
-          <p class="settings-about-copy">nuvioweb.space uses Umami for aggregate visits and screen usage. Account details, searches, media titles and stream URLs are excluded. Analytics respects Do Not Track and Global Privacy Control and is disabled on other domains.</p>
+          <p class="settings-about-copy">Tuvora for the web. Based on alphasquare404's and falcononrails' NuvioWeb, with selected mobile improvements from NurvX and original work by NuvioMedia, Tapframe, WhiteGiso, edoedac0 and their contributors.</p>
         </div>
         <div class="settings-stack">
-          ${this.renderActionRow({ focusKey: "about:website", title: "nuvioweb.space", subtitle: "Open the hosted nightly version.", external: true })}
-          ${this.renderActionRow({ focusKey: "about:source", title: "Source Code", subtitle: "View this community fork on GitHub.", external: true })}
+          ${this.renderActionRow({ focusKey: "about:website", title: "tuvora.co", subtitle: "Apps, account and help.", external: true })}
+          ${this.renderActionRow({ focusKey: "about:source", title: "Source Code", subtitle: "View the source on GitHub (GPL-3.0).", external: true })}
           ${this.renderActionRow({ focusKey: "about:releases", title: "Releases & release notes", subtitle: "Versioned downloads, changes and known limitations.", external: true })}
-          ${this.renderActionRow({ focusKey: "about:issues", title: "Report an Issue", subtitle: "Open an issue for this community fork.", external: true })}
+          ${this.renderActionRow({ focusKey: "about:issues", title: "Report an Issue", subtitle: "Open an issue on GitHub.", external: true })}
           ${this.renderActionRow({ focusKey: "about:upstream", title: "Upstream Project", subtitle: "alphasquare404/NuvioWeb", external: true })}
           ${this.renderActionRow({ focusKey: "about:credits", title: "Credits", subtitle: "The original projects, contributors and playback libraries.", external: true })}
           ${this.renderActionRow({ focusKey: "about:license", title: "View License", subtitle: "NuvioWeb is licensed under the GNU General Public License v3.0.", external: true })}
@@ -8457,7 +8455,7 @@ export const SettingsScreen = {
       title: "Delete all downloaded media?", message: "All offline videos and their downloaded subtitles will be removed.", action: deleteAllBrowserOfflineMedia, focusKey: "downloads:deleteMedia"
     }));
     this.actionMap.set("downloads:clearAll", () => this.confirmOfflineCleanup({
-      title: "Clear all offline data?", message: "All Nuvio offline downloads, partial files, queue entries, and subtitles will be removed.", action: async () => { await deleteAllBrowserOfflineMedia(); await deleteAllBrowserOfflineSubtitles(); }, focusKey: "downloads:clearAll"
+      title: "Clear all offline data?", message: "All Tuvora offline downloads, partial files, queue entries, and subtitles will be removed.", action: async () => { await deleteAllBrowserOfflineMedia(); await deleteAllBrowserOfflineSubtitles(); }, focusKey: "downloads:clearAll"
     }));
     return `
       ${this.renderSectionHeader(SECTION_META.find((item) => item.id === "downloads"))}
@@ -8467,7 +8465,7 @@ export const SettingsScreen = {
         ${this.renderActionRow({ focusKey: "downloads:offlineMedia", title: "Offline media", value: formatOfflineStorageBytes(downloads.mediaBytes), icon: null, disabled: true })}
         ${this.renderActionRow({ focusKey: "downloads:subtitles", title: "Subtitles", value: formatOfflineStorageBytes(downloads.subtitleBytes), icon: null, disabled: true })}
         ${this.renderActionRow({ focusKey: "downloads:partial", title: "Partial downloads", value: formatOfflineStorageBytes(downloads.partialBytes), icon: null, disabled: true })}
-        ${this.renderActionRow({ focusKey: "downloads:total", title: "Nuvio offline data", value: formatOfflineStorageBytes(downloads.totalOfflineBytes), icon: null, disabled: true })}
+        ${this.renderActionRow({ focusKey: "downloads:total", title: "Tuvora offline data", value: formatOfflineStorageBytes(downloads.totalOfflineBytes), icon: null, disabled: true })}
         ${this.renderActionRow({ focusKey: "downloads:quota", title: "Browser quota", value: downloads.quota ? `${formatOfflineStorageBytes(downloads.usage)} / ${formatOfflineStorageBytes(downloads.quota)}` : "Unavailable", icon: null, disabled: true })}
         ${this.renderActionRow({ focusKey: "downloads:persistent", title: "Persistent storage", value: persistent, icon: null, disabled: true })}
         ${downloads.persistent !== true && downloads.canRequestPersistent ? this.renderActionRow({ focusKey: "downloads:requestPersistent", title: "Request Persistent Storage", subtitle: "Ask this browser to retain offline downloads more reliably.", leadingIcon: "save" }) : ""}
@@ -8487,7 +8485,7 @@ export const SettingsScreen = {
         ${this.renderActionRow({ focusKey: "downloads:deleteIncomplete", title: "Delete incomplete downloads", subtitle: "Remove paused, interrupted, and failed partial files.", leadingIcon: "delete", classes: "settings-download-destructive" })}
         ${this.renderActionRow({ focusKey: "downloads:deleteSubtitles", title: "Delete downloaded subtitles", subtitle: "Keep offline video downloads.", leadingIcon: "delete", classes: "settings-download-destructive" })}
         ${this.renderActionRow({ focusKey: "downloads:deleteMedia", title: "Delete all downloaded media", subtitle: "Remove offline videos and associated subtitles.", leadingIcon: "delete", classes: "settings-download-destructive" })}
-        ${this.renderActionRow({ focusKey: "downloads:clearAll", title: "Clear all offline data", subtitle: "Remove all Nuvio offline files and queue metadata.", leadingIcon: "delete", classes: "settings-download-destructive" })}
+        ${this.renderActionRow({ focusKey: "downloads:clearAll", title: "Clear all offline data", subtitle: "Remove all Tuvora offline files and queue metadata.", leadingIcon: "delete", classes: "settings-download-destructive" })}
       </div></div>`;
   },
 

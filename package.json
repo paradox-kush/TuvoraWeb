@@ -1,21 +1,21 @@
 {
-  "name": "nuvioweb",
+  "name": "tuvoraweb",
   "private": true,
   "type": "module",
   "version": "0.2.0-beta.2",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/falcononrails/NuvioWeb.git"
+    "url": "git+https://github.com/paradox-kush/TuvoraWeb.git"
   },
   "bugs": {
-    "url": "https://github.com/falcononrails/NuvioWeb/issues"
+    "url": "https://github.com/paradox-kush/TuvoraWeb/issues"
   },
-  "homepage": "https://nuvioweb.space/",
+  "homepage": "https://tuvora.co/",
   "nuvioFork": {
     "upstreamVersion": "0.3.35",
     "upstreamRepository": "https://github.com/alphasquare404/NuvioWeb",
-    "maintainer": "falcononrails",
-    "defaultBranch": "nightly"
+    "maintainer": "Tuvora",
+    "defaultBranch": "main"
   },
   "scripts": {
     "build": "node ./scripts/build.mjs",

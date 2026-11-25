@@ -18,7 +18,7 @@ export async function readAppMetadata() {
     .replace(/\.git$/, "")
     .replace(/\/$/, "");
   const fork = packageJson?.nuvioFork || {};
-  const sourceUrl = sourceRepositoryUrl || "https://github.com/falcononrails/NuvioWeb";
+  const sourceUrl = sourceRepositoryUrl || "https://github.com/paradox-kush/TuvoraWeb";
   const version = String(packageJson?.version || "0.0.0").trim() || "0.0.0";
   const channel = ["nightly", "beta", "stable"].includes(process.env.NUVIO_RELEASE_CHANNEL)
     ? process.env.NUVIO_RELEASE_CHANNEL
@@ -28,7 +28,7 @@ export async function readAppMetadata() {
     name: String(packageJson?.name || "").trim(),
     version,
     identity: {
-      name: "NuvioWeb",
+      name: "Tuvora Web",
       version,
       channel,
       revision: /^[a-f0-9]{40}$/i.test(revision) ? revision : "",

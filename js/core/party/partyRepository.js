@@ -28,7 +28,7 @@ import {
   sameJson
 } from "./partyModels.js";
 
-const DEFAULT_NAME = "Nuvio";
+const DEFAULT_NAME = "Tuvora";
 const COLOR_PATTERN = /^#[0-9A-Fa-f]{6}$/;
 const HEARTBEAT_INTERVAL_MS = 2 * 60 * 1000;
 const PERSIST_DELAY_MS = 1500;
@@ -125,7 +125,7 @@ export function createPartyRepository({
   deviceId = () => getSyncClientId(),
   identity: identityOverride = null,
   serverCapable = () => Boolean(SUPABASE_URL && SUPABASE_ANON_KEY),
-  isCustomServer = () => !/^https:\/\/api(?:-two)?\.(?:nuvio\.tv|nuvioapp\.space)\/?$/.test(SUPABASE_URL),
+  isCustomServer = () => !/^https:\/\/qsonncwknzdixurjyqap\.supabase\.co\/?$/.test(SUPABASE_URL),
   setTimer = (callback, ms) => setTimeout(callback, ms),
   clearTimer = (id) => clearTimeout(id)
 } = {}) {
@@ -279,8 +279,8 @@ export function createPartyRepository({
       hostOnly: info.host_only,
       sharing: false,
       inviteLink: isCustomServer()
-        ? `nuvio://party/${info.code}`
-        : `https://nuvio.tv/party/${info.code}`
+        ? `tuvora://party/${info.code}`
+        : `https://tuvora.co/party/${info.code}`
     };
     return withMedia(party, info.media);
   }

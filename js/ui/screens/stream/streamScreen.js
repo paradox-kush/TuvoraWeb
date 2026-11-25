@@ -2167,7 +2167,7 @@ export const StreamScreen = {
 
   renderOfflineDownloadNotice() {
     if (!Environment.isBrowser() || !this.hasActiveOfflineDownload) return "";
-    return `<div class="stream-route-offline-global-notice" aria-live="polite">Keep Nuvio open for reliable downloading</div>`;
+    return `<div class="stream-route-offline-global-notice" aria-live="polite">Keep Tuvora open for reliable downloading</div>`;
   },
 
   bindListScrollState() {

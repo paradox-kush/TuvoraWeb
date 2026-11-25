@@ -777,7 +777,7 @@ function setupRepository({ api = fakeApi(), auth = fakeAuth(), capable = true } 
   const state = t.repo.getState();
   assert.equal(state.party.code, "ABC234");
   assert.equal(state.party.mediaKey, MEDIA_KEY);
-  assert.equal(state.party.inviteLink, "https://nuvio.tv/party/ABC234");
+  assert.equal(state.party.inviteLink, "https://tuvora.co/party/ABC234");
   assert.equal(t.socket.topic, "watch-party:p1");
   assert.deepEqual(t.socket.options, { presenceKey: "m1", isPrivate: true });
   assert.equal(t.api.calls[0][0], "create");

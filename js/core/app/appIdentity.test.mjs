@@ -4,29 +4,29 @@ import { createAppIdentity } from "./appIdentity.js";
 
 test("app identity preserves fork provenance while using fork-owned links", () => {
   const identity = createAppIdentity({
-    name: "NuvioWeb",
+    name: "Tuvora Web",
     version: "0.1.0",
     upstreamVersion: "0.3.35",
-    maintainer: "falcononrails",
-    sourceRepositoryUrl: "https://github.com/falcononrails/NuvioWeb",
-    issuesUrl: "https://github.com/falcononrails/NuvioWeb/issues",
-    contributorsUrl: "https://github.com/falcononrails/NuvioWeb/graphs/contributors",
-    licenseUrl: "https://github.com/falcononrails/NuvioWeb/blob/nightly/LICENSE",
+    maintainer: "Tuvora",
+    sourceRepositoryUrl: "https://github.com/paradox-kush/TuvoraWeb",
+    issuesUrl: "https://github.com/paradox-kush/TuvoraWeb/issues",
+    contributorsUrl: "https://github.com/paradox-kush/TuvoraWeb/graphs/contributors",
+    licenseUrl: "https://github.com/paradox-kush/TuvoraWeb/blob/main/LICENSE",
     upstreamRepositoryUrl: "https://github.com/alphasquare404/NuvioWeb",
-    latestReleaseUrl: "https://api.github.com/repos/falcononrails/NuvioWeb/releases/latest"
+    latestReleaseUrl: "https://api.github.com/repos/paradox-kush/TuvoraWeb/releases/latest"
   });
 
   assert.equal(identity.version, "0.1.0");
   assert.equal(identity.upstreamVersion, "0.3.35");
-  assert.equal(identity.maintainer, "falcononrails");
-  assert.equal(identity.sourceRepositoryUrl, "https://github.com/falcononrails/NuvioWeb");
-  assert.equal(identity.contributorsUrl, "https://github.com/falcononrails/NuvioWeb/graphs/contributors");
+  assert.equal(identity.maintainer, "Tuvora");
+  assert.equal(identity.sourceRepositoryUrl, "https://github.com/paradox-kush/TuvoraWeb");
+  assert.equal(identity.contributorsUrl, "https://github.com/paradox-kush/TuvoraWeb/graphs/contributors");
   assert.equal(identity.upstreamRepositoryUrl, "https://github.com/alphasquare404/NuvioWeb");
 });
 
 test("app identity rejects non-HTTPS runtime links", () => {
   const identity = createAppIdentity({ sourceRepositoryUrl: "javascript:alert(1)" });
-  assert.equal(identity.sourceRepositoryUrl, "https://github.com/falcononrails/NuvioWeb");
+  assert.equal(identity.sourceRepositoryUrl, "https://github.com/paradox-kush/TuvoraWeb");
 });
 
 

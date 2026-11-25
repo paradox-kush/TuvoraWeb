@@ -480,12 +480,12 @@
     <string name="action_none">எதுவுமில்லை</string>
     <string name="action_close">மூடு</string>
     <string name="supporters_contributors_title">ஆதரவாளர்கள் &amp; பங்களிப்பாளர்கள்</string>
-    <string name="supporters_contributors_subtitle">Nuvio-க்கு ஆதரவளிக்கும் மற்றும் டிவி, மொபைல் முழுவதும் இதை உருவாக்கும் நபர்கள்.</string>
+    <string name="supporters_contributors_subtitle">Tuvora-க்கு ஆதரவளிக்கும் மற்றும் டிவி, மொபைல் முழுவதும் இதை உருவாக்கும் நபர்கள்.</string>
     <string name="supporters_contributors_supporters_copy">ஆதரவாளர்கள் மற்றும் நன்கொடையாளர்கள் இந்த திட்டம் தொடர்ந்து முன்னேற, கட்டமைப்பு செலவுகளை ஏற்க, மற்றும் பெரிய அம்சங்களுக்கு இடமளிக்க உதவுகின்றனர்.</string>
-    <string name="supporters_contributors_donate_copy">Nuvio எப்போதும் இலவசமாகவும் திறந்த மூலமாகவும் இருக்கும். திட்டத்தை ஆதரிக்க விரும்பினால், இதற்கான நேரம் மற்றும் கட்டமைப்பு செலவுகளுக்கு உதவலாம்.</string>
-    <string name="supporters_contributors_donate_button">Nuvio-க்கு நன்கொடை அளிக்கவும்</string>
+    <string name="supporters_contributors_donate_copy">Tuvora எப்போதும் இலவசமாகவும் திறந்த மூலமாகவும் இருக்கும். திட்டத்தை ஆதரிக்க விரும்பினால், இதற்கான நேரம் மற்றும் கட்டமைப்பு செலவுகளுக்கு உதவலாம்.</string>
+    <string name="supporters_contributors_donate_button">Tuvora-க்கு நன்கொடை அளிக்கவும்</string>
     <string name="supporters_contributors_qr_title">நன்கொடை அளிக்க ஸ்கேன் செய்யவும்</string>
-    <string name="supporters_contributors_qr_subtitle">உங்கள் தொலைபேசியில் இணைப்பை திறந்து Ko-fi மூலம் Nuvio-வை ஆதரிக்கவும்.</string>
+    <string name="supporters_contributors_qr_subtitle">உங்கள் தொலைபேசியில் இணைப்பை திறந்து Ko-fi மூலம் Tuvora-வை ஆதரிக்கவும்.</string>
     <string name="supporters_contributors_qr_hint">QR குறியீட்டை கேமராவால் ஸ்கேன் செய்யவும் அல்லது கீழே உள்ள பொத்தானைப் பயன்படுத்தவும்.</string>
     <string name="supporters_contributors_back_button">விவரங்களுக்கு திரும்பு</string>
     <string name="supporters_tab">ஆதரவாளர்கள்</string>
@@ -499,7 +499,7 @@
     <string name="sponsors_loading">ஆதரிப்பாளர்கள் ஏற்றப்படுகிறது…</string>
     <string name="sponsors_empty">இன்னும் ஆதரிப்பாளர்கள் இல்லை.</string>
     <string name="sponsors_error_title">ஆதரிப்பாளர்களை ஏற்ற முடியவில்லை</string>
-    <string name="sponsors_detail_copy">வளர்ச்சியின் பல பகுதிகளில் ஆதரவு வழங்கி Nuvio முன்னேற உதவுகின்றனர்.</string>
+    <string name="sponsors_detail_copy">வளர்ச்சியின் பல பகுதிகளில் ஆதரவு வழங்கி Tuvora முன்னேற உதவுகின்றனர்.</string>
     <string name="sponsors_channel_unavailable">ஆதரிப்பாளர் சேனல் கிடைக்கவில்லை.</string>
     <string name="sponsors_open_channel">ஆதரிப்பாளர் சேனலை திற</string>
     <string name="contributors_loading">GitHub பங்களிப்பாளர்கள் ஏற்றப்படுகிறது…</string>
@@ -568,8 +568,8 @@
     <string name="playback_player_ask_desc">ஒவ்வொரு முறையும் பிளேயரை தேர்வு செய்</string>
     <string name="playback_player_auto">தானாக (உள்ளடக்கத்திற்கு சிறந்தது)</string>
     <string name="playback_player_auto_desc">திரைப்படங்கள் &amp; தொடர்களுக்கு ExoPlayer · Anime-க்கு MPV</string>
-    <string name="playback_engine_exoplayer_desc">தற்போதைய Nuvio அம்சங்களுடன் சிறந்த பொருத்தம்.</string>
-    <string name="playback_engine_mvplayer_desc">Nuvio OSD கட்டுப்பாடுகளுடன் libmpv பயன்படுத்துகிறது. சோதனை நிலையில் உள்ளது.</string>
+    <string name="playback_engine_exoplayer_desc">தற்போதைய Tuvora அம்சங்களுடன் சிறந்த பொருத்தம்.</string>
+    <string name="playback_engine_mvplayer_desc">Tuvora OSD கட்டுப்பாடுகளுடன் libmpv பயன்படுத்துகிறது. சோதனை நிலையில் உள்ளது.</string>
     <string name="audio_trailer_section">ட்ரெய்லர்</string>
     <string name="audio_autoplay_trailers">தானியங்கு ட்ரெய்லர் இயக்கம்</string>
     <string name="audio_autoplay_trailers_sub">செயலற்ற நிலையில் சில நேரம் கழித்து விவரத் திரையில் ட்ரெய்லர்களை தானாக இயக்கவும்</string>
@@ -1469,7 +1469,7 @@
     <string name="layout_selection_subtitle">உங்கள் முகப்புத்திரை வடிவமைப்பை தேர்ந்தெடுக்கவும்</string>
     <string name="layout_selection_continue">தொடர்க</string>
     <string name="update_title">செயலி புதுப்பிப்பு</string>
-    <string name="update_installer_required">உங்கள் டிவியில் செயலியைப் புதுப்பிக்க Nuvio WebTV Installer-ஐப் பயன்படுத்தவும்.</string>
+    <string name="update_installer_required">உங்கள் டிவியில் செயலியைப் புதுப்பிக்க Tuvora Installer-ஐப் பயன்படுத்தவும்.</string>
     <string name="update_release_notes">புதியவை</string>
     <string name="update_release_notes_unavailable">வெளியீட்டு விளக்கம் கிடைக்கவில்லை.</string>
     <string name="update_downloading">புதுப்பிப்பு பதிவிறக்கப்படுகிறது</string>
@@ -2096,7 +2096,7 @@
     <string name="autoplay_reuse_binge_group">பிஞ்ச் குழுவை மீண்டும் பயன்படுத்து</string>
     <string name="autoplay_reuse_binge_group_sub">அமர்வுகளுக்கு இடையில் கடைசி பிஞ்ச் குழுவை நினைவில் வைத்து மீண்டும் பயன்படுத்து (தொடர்ந்து பார்க்க, விவரங்கள் போன்றவை).</string>
     <string name="unsupported_device_title">இந்த டிவி ஆதரிக்கப்படவில்லை</string>
-    <string name="unsupported_device_message">இந்த டிவி, Nuvio TV இன் இந்தப் பதிப்பிற்கான குறைந்தபட்சத் தேவைகளைப் பூர்த்தி செய்யவில்லை.</string>
+    <string name="unsupported_device_message">இந்த டிவி, Tuvora இன் இந்தப் பதிப்பிற்கான குறைந்தபட்சத் தேவைகளைப் பூர்த்தி செய்யவில்லை.</string>
     <string name="unsupported_device_current_platform">தற்போதைய இயங்குதளம்</string>
     <string name="unsupported_device_current_firmware">தற்போதைய ஃபார்ம்வேர்</string>
     <string name="unsupported_device_required_platform">தேவையான இயங்குதளம்</string>
@@ -2118,7 +2118,7 @@
     <string name="debrid_device_auth_expired">இந்தக் குறியீடு காலாவதியானது. மீண்டும் முயற்சிக்கவும்.</string>
     <string name="debrid_device_auth_failed">உள்நுழைவைத் தொடங்க முடியவில்லை.</string>
     <string name="debrid_device_auth_connected">இந்தச் சாதனத்தில் %1$s இணைக்கப்பட்டுள்ளது.</string>
-    <string name="debrid_device_auth_instructions">QR குறியீட்டை ஸ்கேன் செய்து Nuvio-ஐ அங்கீகரிக்க இந்தக் குறியீட்டை உள்ளிடவும்.</string>
+    <string name="debrid_device_auth_instructions">QR குறியீட்டை ஸ்கேன் செய்து Tuvora-ஐ அங்கீகரிக்க இந்தக் குறியீட்டை உள்ளிடவும்.</string>
     <string name="debrid_device_auth_missing_configuration">இந்த உருவாக்கத்தில் இந்த உள்நுழைவு முறை உள்ளமைக்கப்படவில்லை.</string>
     <string name="debrid_disconnect">இணைப்பைத் துண்டிக்கவும்</string>
     <string name="debrid_connected">இணைக்கப்பட்டது</string>

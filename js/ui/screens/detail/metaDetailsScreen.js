@@ -5863,7 +5863,7 @@ export const MetaDetailsScreen = {
     if (sourceMode === LibrarySourceMode.TRAKT) {
       return "Trakt";
     }
-    return "Nuvio";
+    return "Tuvora";
   },
 
   getDesktopLibraryDefaultKey(sourceMode) {

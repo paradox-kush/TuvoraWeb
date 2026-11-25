@@ -4402,7 +4402,7 @@ export const PlayerScreen = {
               `
                   : ""
               }
-              <div class="player-loading-title">${escapeHtml(loadingMeta.title || this.params.playerTitle || this.params.itemId || "Nuvio")}</div>
+              <div class="player-loading-title">${escapeHtml(loadingMeta.title || this.params.playerTitle || this.params.itemId || "Tuvora")}</div>
             </div>
             <div class="player-loading-subtitle${loadingMeta.subtitle ? "" : " hidden"}">${escapeHtml(loadingMeta.subtitle || "")}</div>
             <div class="player-loading-status hidden"></div>
@@ -5590,7 +5590,7 @@ export const PlayerScreen = {
           this.params?.playerTitle ||
           this.params?.itemTitle ||
           this.params?.itemId ||
-          "Nuvio"
+          "Tuvora"
       ).trim(),
       subtitle: String(transition?.subtitle || this.params?.playerSubtitle || "").trim(),
       logoUrl: String(transition?.logoUrl || this.params?.playerLogoUrl || "").trim(),
@@ -5627,7 +5627,7 @@ export const PlayerScreen = {
         this.params?.playerTitle ||
         this.params?.itemTitle ||
         this.params?.itemId ||
-        "Nuvio";
+        "Tuvora";
     }
     if (subtitle) {
       subtitle.textContent = loadingMeta.subtitle || "";
@@ -7728,7 +7728,7 @@ export const PlayerScreen = {
       this.consecutiveAutoPlayCount = 0;
     }
     this.nextEpisodeTransitionMeta = {
-      title: this.params?.playerTitle || this.params?.itemTitle || this.params?.itemId || "Nuvio",
+      title: this.params?.playerTitle || this.params?.itemTitle || this.params?.itemId || "Tuvora",
       subtitle: nextEpisode.episodeTitle || nextEpisode.episodeLabel || "",
       logoUrl: this.params?.playerLogoUrl || this.params?.logo || "",
       backdropUrl:

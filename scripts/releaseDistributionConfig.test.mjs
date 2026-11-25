@@ -56,9 +56,10 @@ test("Environment configuration retains hosted defaults and server-only Trakt va
     readRepositoryFile("docs/environment.md"),
   ]);
 
-  assert.match(environmentTemplate, /NUVIO_SUPABASE_URL=https:\/\/api\.nuvio\.tv/);
-  assert.match(environmentTemplate, /NUVIO_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1Ni/);
-  assert.match(environmentTemplate, /NUVIO_SUPABASE_FALLBACK_URL=https:\/\/api-two\.nuvioapp\.space/);
+  assert.match(environmentTemplate, /NUVIO_SUPABASE_URL=https:\/\/qsonncwknzdixurjyqap\.supabase\.co\n/);
+  assert.match(environmentTemplate, /NUVIO_SUPABASE_ANON_KEY=sb_publishable_/);
+  assert.match(environmentTemplate, /NUVIO_SUPABASE_FALLBACK_URL=\n/);
+  assert.doesNotMatch(environmentTemplate, /nuvio\.tv|nuvioapp\.space/);
   assert.match(environmentTemplate, /TRAKT_CLIENT_SECRET=/);
   assert.match(environmentTemplate, /Server-only Trakt bridge values/);
   assert.doesNotMatch(environmentTemplate, /service[_-]?role/i);

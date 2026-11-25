@@ -53,7 +53,7 @@ const PROFILE_PIN_TEXT = {
   supportVerifyChange: "Enter the current 4-digit PIN before setting a new one.",
   supportVerifyRemove: "Enter the current 4-digit PIN to remove this lock.",
   mismatch: "PINs did not match. Enter a new PIN again.",
-  forgot: "Forgot PIN? Reset it from your Nuvio account on nuvio website.",
+  forgot: "Forgot PIN? Reset it from your Tuvora account at tuvora.co.",
   back: "Press back to cancel",
   verifying: "Verifying…",
   saving: "Saving…",
@@ -136,7 +136,7 @@ function showProfileActivationTransitionOverlay() {
   overlay.className = PROFILE_ACTIVATION_OVERLAY_CLASS;
   overlay.setAttribute("aria-hidden", "true");
   overlay.innerHTML = `
-    <img src="assets/brand/app_logo_wordmark.png" class="profile-activation-transition-overlay-logo" alt="Nuvio" />
+    <img src="assets/brand/app_logo_wordmark.png" class="profile-activation-transition-overlay-logo" alt="Tuvora" />
     ${renderLoadingIndicator({ className: "profile-activation-transition-overlay-spinner" })}
   `;
   document.body.appendChild(overlay);
@@ -562,8 +562,8 @@ export const ProfileSelectionScreen = {
         }
         <div class="profile-main-layer"${isPinActive ? ' aria-hidden="true"' : ""}>
           <div class="profile-brand">
-            <img src="assets/brand/app_logo_wordmark.png" class="profile-logo" alt="Nuvio"/>
-            <span class="profile-logo-text-fallback" hidden>Nuvio</span>
+            <img src="assets/brand/app_logo_wordmark.png" class="profile-logo" alt="Tuvora"/>
+            <span class="profile-logo-text-fallback" hidden>Tuvora</span>
           </div>
 
           <h1 class="profile-title">${escapeHtml(title)}</h1>

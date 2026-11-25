@@ -66,7 +66,7 @@ function formBody(values = {}) {
 }
 
 export const DebridApi = {
-  async startTorboxDeviceAuthorization(appName = "Nuvio") {
+  async startTorboxDeviceAuthorization(appName = "Tuvora") {
     void appName;
     return requestBridgeJson("/api/debrid/torbox/device/start", { method: "POST" });
   },

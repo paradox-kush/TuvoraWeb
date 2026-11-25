@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Nuvio</string>
+    <string name="app_name">Tuvora</string>
     <string name="type_movie">Film</string>
     <string name="type_series">Sorozat</string>
     <string name="type_unknown">Ismeretlen</string>
@@ -201,10 +201,10 @@
 	
 <!-- SupportersContributorsScreen -->
     <string name="supporters_contributors_title">Támogatók és közreműködők</string>
-    <string name="supporters_contributors_subtitle">A Nuvio támogatói, valamint a TV-s és mobil platformokon dolgozó közreműködők.</string>
+    <string name="supporters_contributors_subtitle">A Tuvora támogatói, valamint a TV-s és mobil platformokon dolgozó közreműködők.</string>
     <string name="supporters_contributors_supporters_copy">A közreműködők és támogatók (adományozók) segítenek a projekt fenntartásában, az infrastruktúra finanszírozásában és az ambiciózus funkciók megvalósításában.</string>
-    <string name="supporters_contributors_donate_copy">A Nuvio ingyenes és nyílt forráskódú marad. Ha szeretnéd támogatni a projektet, segíthetsz a ráfordított idő és az infrastruktúra költségeinek fedezésében.</string>
-    <string name="supporters_contributors_donate_button">Nuvio támogatása</string>
+    <string name="supporters_contributors_donate_copy">A Tuvora ingyenes és nyílt forráskódú marad. Ha szeretnéd támogatni a projektet, segíthetsz a ráfordított idő és az infrastruktúra költségeinek fedezésében.</string>
+    <string name="supporters_contributors_donate_button">Tuvora támogatása</string>
     <string name="supporters_contributors_qr_title">Beolvasás a támogatáshoz</string>
     <string name="supporters_contributors_qr_subtitle">Nyisd meg a linket a telefonodon, és támogasd a Nuviót Ko-fin keresztül.</string>
     <string name="supporters_contributors_qr_hint">Irányítsd a kamerád a QR-kódra, vagy használd az alábbi gombot.</string>
@@ -549,7 +549,7 @@
     <string name="trakt_stat_watched_hours">Nézett órák</string>
     <string name="trakt_disconnect">Leválasztás</string>
     <string name="trakt_disconnect_title">Lecsatlakozol a Traktról?</string>
-    <string name="trakt_disconnect_subtitle">Ez megszünteti a kapcsolatot a Trakt fiókod és a Nuvio között.</string>
+    <string name="trakt_disconnect_subtitle">Ez megszünteti a kapcsolatot a Trakt fiókod és a Tuvora között.</string>
     <string name="trakt_login">Bejelentkezés</string>
     <string name="trakt_retry">Újra</string>
     <string name="trakt_back">Vissza</string>
@@ -923,13 +923,13 @@
     <string name="catalog_see_all_empty_subtitle">Próbálkozz másik katalógussal, vagy térj vissza később</string>
 	
     <!-- LayoutSelectionScreen -->
-    <string name="layout_selection_welcome">Üdvözöl a Nuvio</string>
+    <string name="layout_selection_welcome">Üdvözöl a Tuvora</string>
     <string name="layout_selection_subtitle">Válaszd ki a kezdőképernyő elrendezését</string>
     <string name="layout_selection_continue">Folytatás</string>
 	
     <!-- UpdatePromptDialog -->
     <string name="update_title">Alkalmazásfrissítés</string>
-    <string name="update_installer_required">A TV-n lévő alkalmazás frissítéséhez használd a Nuvio WebTV Installert.</string>
+    <string name="update_installer_required">A TV-n lévő alkalmazás frissítéséhez használd a Tuvora Installert.</string>
     <string name="update_release_notes">Újdonságok</string>
     <string name="update_release_notes_unavailable">Nem érhető el kiadási leírás.</string>
     <string name="update_downloading">Frissítés letöltése</string>
@@ -1015,7 +1015,7 @@
     <string name="autoplay_timeout_instant">Azonnal</string>
     <string name="autoplay_timeout_unlimited">Korlátlan</string>
     <string name="unsupported_device_title">A TV nem támogatott</string>
-    <string name="unsupported_device_message">Ez a TV nem felel meg a Nuvio TV ezen verziójához szükséges minimumkövetelményeknek.</string>
+    <string name="unsupported_device_message">Ez a TV nem felel meg a Tuvora ezen verziójához szükséges minimumkövetelményeknek.</string>
     <string name="unsupported_device_current_platform">Jelenlegi platform</string>
     <string name="unsupported_device_current_firmware">Jelenlegi firmware</string>
     <string name="unsupported_device_required_platform">Szükséges platform</string>
@@ -1045,7 +1045,7 @@
     <string name="debrid_device_auth_expired">Ez a kód lejárt. Próbáld újra.</string>
     <string name="debrid_device_auth_failed">Nem sikerült elindítani a bejelentkezést.</string>
     <string name="debrid_device_auth_connected">A(z) %1$s csatlakoztatva van ezen az eszközön.</string>
-    <string name="debrid_device_auth_instructions">Olvasd be a QR-kódot, majd add meg ezt a kódot a Nuvio engedélyezéséhez.</string>
+    <string name="debrid_device_auth_instructions">Olvasd be a QR-kódot, majd add meg ezt a kódot a Tuvora engedélyezéséhez.</string>
     <string name="debrid_device_auth_missing_configuration">Ez a bejelentkezési mód nincs beállítva ebben a buildben.</string>
     <string name="debrid_disconnect">Leválasztás</string>
     <string name="debrid_connected">Csatlakoztatva</string>
