@@ -1,4 +1,5 @@
 import { PlayerController } from "../../../core/player/playerController.js";
+import { classifyBrowserPlaybackFailure, fallbackActionsFor, isBrowserMediaFailure } from "../../../core/player/browserPlaybackFallback.js";
 import {
   audioTrackLabelConflictsWithCodec,
   formatAudioCodecName,
@@ -50,7 +51,9 @@ import {
   shouldMarkBrowserPictureInPictureUnavailable
 } from "../../components/browserPictureInPicture.js";
 import {
+  browserExternalPlayerLabel,
   copyBrowserExternalStreamLink,
+  normalizeBrowserExternalPlayer,
   getBrowserExternalPlayerPlatform,
   getManualBrowserExternalPlayerOptions,
   isTransferableExternalMediaUrl,
@@ -4592,11 +4595,11 @@ export const PlayerScreen = {
       actionsClassName: "desktop-external-player-actions",
       buttons: [
         ...getManualBrowserExternalPlayerOptions().map((player) => ({
-          label: player === "lenna" ? "Lenna" : player === "infuse" ? "Infuse" : player === "outplayer" ? "Outplayer" : "VLC",
+          label: browserExternalPlayerLabel(player),
           className: "desktop-external-player-choice",
           content: () => {
             const copy = document.createElement("span");
-            const playerName = player === "lenna" ? "Lenna" : player === "infuse" ? "Infuse" : player === "outplayer" ? "Outplayer" : "VLC";
+            const playerName = browserExternalPlayerLabel(player);
             copy.className = "desktop-external-player-choice-copy";
             copy.innerHTML = `<strong>${playerName}</strong><small>Open this stream in ${playerName}</small>`;
             return copy;
@@ -4650,7 +4653,7 @@ export const PlayerScreen = {
     // Return notifications are optional: the binding helper resolves false on
     // unsupported, unavailable, or failed Push paths and must not alter launch.
     await bindBrowserPushReturn({ token: prepared.handoff?.token });
-    launchBrowserExternalPlayer({ href: prepared.launch.href });
+    launchBrowserExternalPlayer({ href: prepared.launch.href, download: prepared.launch.download });
     return true;
   },
 
@@ -5651,6 +5654,7 @@ export const PlayerScreen = {
     this.startupErrorMessage = "";
     this.startupErrorMediaCode = 0;
     this.startupErrorDetails = [];
+    this.startupFallbackActions = [];
     this.renderStartupErrorOverlay();
   },
 
@@ -5902,6 +5906,7 @@ export const PlayerScreen = {
           resolverStatus,
           resolverDetail
         });
+    this.applyBrowserPlaybackFallback({ mediaErrorCode, detail, streamCandidate, playbackUrl, reason });
     this.lastPlaybackErrorAt = 0;
     this.loadingVisible = false;
     this.loadingProgress = null;
@@ -6088,6 +6093,73 @@ export const PlayerScreen = {
     }
   },
 
+  /**
+   * A stream the browser refused gets a plain reason and a way out (Tuvora app, an
+   * external player, copy link) instead of a bare error. Decision: browserPlaybackFallback.js.
+   */
+  applyBrowserPlaybackFallback({ mediaErrorCode = 0, detail = "", streamCandidate = null, playbackUrl = "", reason = "" } = {}) {
+    this.startupFallbackActions = [];
+    if (!isBrowserMediaFailure({ reason, mediaErrorCode }) || !Environment.isBrowser()) return;
+    const mediaUrl = String(playbackUrl || this.activePlaybackUrl || streamCandidate?.url || "").trim();
+    const failure = classifyBrowserPlaybackFailure({
+      pageProtocol: String(globalThis.location?.protocol || ""),
+      mediaUrl,
+      mediaErrorCode,
+      httpStatus: extractPlaybackHttpStatus(detail),
+      detail,
+      headerRestricted: Boolean(this.getWebHeaderRestrictedStreamMessage(streamCandidate))
+    });
+    this.startupFallbackActions = fallbackActionsFor({
+      reason: failure.reason,
+      players: getManualBrowserExternalPlayerOptions(),
+      preferredPlayer: normalizeBrowserExternalPlayer(PlayerSettingsStore.get().browserExternalPlayer),
+      contentType: normalizeItemType(this.params?.itemType || ""),
+      contentId: String(this.params?.itemId || ""),
+      mediaUrl
+    }).filter((action) => action.id !== "back");
+    if (failure.message) {
+      this.startupErrorDetails = [this.startupErrorMessage, ...(this.startupErrorDetails || [])].filter(Boolean);
+      this.startupErrorMessage = failure.message;
+    }
+  },
+
+  renderStartupFallbackButtons() {
+    return (this.startupFallbackActions || []).map((action) => {
+      const label =
+        action.id === "open-app" ? "Open in Tuvora app"
+          : action.id === "player" ? `Open in ${browserExternalPlayerLabel(action.player)}`
+            : "Copy stream link";
+      const value = action.id === "player" ? `player:${action.player}` : action.id;
+      return `<button class="player-startup-error-button focusable" type="button" tabindex="0" data-player-error-action="${escapeHtml(value)}">${escapeHtml(label)}</button>`;
+    }).join("");
+  },
+
+  async runStartupFallbackAction(value = "") {
+    if (value === "open-app") {
+      const href = (this.startupFallbackActions || []).find((action) => action.id === "open-app")?.href;
+      if (!href) return false;
+      globalThis.location.assign(href);
+      // A custom scheme with no app installed does nothing at all, so say what to do next.
+      setTimeout(() => {
+        if (globalThis.document?.visibilityState === "visible") {
+          this.showAspectToast("No Tuvora app opened. Get it at tuvora.co");
+        }
+      }, 2000);
+      return true;
+    }
+    if (value.startsWith("player:")) {
+      const launched = await this.launchExternalPlayer(value.slice("player:".length));
+      if (!launched) this.showAspectToast("Could not open that player");
+      return true;
+    }
+    if (value === "copy-link") {
+      const copied = await copyBrowserExternalStreamLink({ mediaUrl: this.getExternalPlayerContext()?.mediaUrl });
+      this.showAspectToast(copied ? "Stream link copied" : "Could not copy stream link");
+      return true;
+    }
+    return false;
+  },
+
   renderStartupErrorOverlay() {
     const overlay = this.uiRefs?.startupErrorOverlay;
     if (!overlay) {
@@ -6120,6 +6192,7 @@ export const PlayerScreen = {
             : ""
         }
         ${this.awaitingPlaybackGesture ? '<button class="player-startup-error-button focusable focused" type="button" data-player-error-action="play">Play</button>' : ""}
+        ${this.awaitingPlaybackGesture ? "" : this.renderStartupFallbackButtons()}
         <button class="player-startup-error-button focusable" type="button" tabindex="0" data-player-error-action="back">
           ${escapeHtml(t("player_go_back", {}, "Go Back"))}
         </button>
@@ -16254,7 +16327,7 @@ export const PlayerScreen = {
         this.navigateBackToStreamScreen();
         return true;
       }
-      return false;
+      return this.runStartupFallbackAction(String(errorAction.dataset.playerErrorAction || ""));
     }
 
     if (target.closest?.("[data-player-pointer-action='skipIntro']")) {

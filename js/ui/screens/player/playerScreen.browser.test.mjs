@@ -183,7 +183,7 @@ test("Player external launches bind the optional Push return subscription before
   const source = await readFile(playerScreenUrl, "utf8");
 
   assert.match(source, /import \{ bindBrowserPushReturn \} from "\.\.\/\.\.\/components\/browserPushReturn\.js";/);
-  assert.match(source, /await bindBrowserPushReturn\(\{ token: prepared\.handoff\?\.token \}\);\s*launchBrowserExternalPlayer\(\{ href: prepared\.launch\.href \}\);/);
+  assert.match(source, /await bindBrowserPushReturn\(\{ token: prepared\.handoff\?\.token \}\);\s*launchBrowserExternalPlayer\(\{ href: prepared\.launch\.href, download: prepared\.launch\.download \}\);/);
 });
 
 

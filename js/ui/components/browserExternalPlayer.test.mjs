@@ -2,6 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   buildAndroidVlcLaunchUrl,
+  buildAndroidPlayerIntentUrl,
+  buildSystemPlayerPlaylist,
+  browserExternalPlayerLabel,
   buildBrowserExternalPlayerLaunch,
   buildInfuseLaunchUrl,
   buildIosVlcLaunchUrl,
@@ -38,13 +41,13 @@ function createHandoffRuntime() {
 
 test("external player options are platform-aware", () => {
   assert.equal(getBrowserExternalPlayerPlatform(ios), "ios");
-  assert.deepEqual(getBrowserExternalPlayerOptions(ios), ["lenna", "outplayer", "infuse", "vlc", "disabled"]);
-  assert.deepEqual(getManualBrowserExternalPlayerOptions(ios), ["lenna", "outplayer", "infuse", "vlc"]);
+  assert.deepEqual(getBrowserExternalPlayerOptions(ios), ["system", "vlc", "infuse", "outplayer", "lenna", "disabled"]);
+  assert.deepEqual(getManualBrowserExternalPlayerOptions(ios), ["system", "vlc", "infuse", "outplayer", "lenna"]);
   assert.equal(getBrowserExternalPlayerStoreUrl({ player: "outplayer", platform: "ios" }), "https://apps.apple.com/app/outplayer/id1449923287");
   assert.equal(getBrowserExternalPlayerPlatform(android), "android");
-  assert.deepEqual(getBrowserExternalPlayerOptions(android), ["disabled", "vlc"]);
+  assert.deepEqual(getBrowserExternalPlayerOptions(android), ["disabled", "system", "vlc", "mxplayer", "mpv"]);
   assert.equal(getBrowserExternalPlayerPlatform(desktop), "other");
-  assert.deepEqual(getBrowserExternalPlayerOptions(desktop), ["disabled"]);
+  assert.deepEqual(getBrowserExternalPlayerOptions(desktop), ["disabled", "system"]);
 });
 
 test("external handoff rejects non-transferable local URLs", () => {
@@ -259,4 +262,45 @@ test("the persisted Outplayer preference keeps manual reporting callback-free", 
   assert.equal(launch.searchParams.has("x-cancel"), false);
   assert.equal(prepared.handoff.automatic, false);
   assert.equal(prepared.handoff.manualPromptEligible, true);
+});
+
+test("the Android system player is an untargeted video intent, so Android shows its chooser", () => {
+  const intent = buildAndroidPlayerIntentUrl({ mediaUrl: "http://provider.example:8080/live/u/p/1.ts" });
+  assert.equal(intent, "intent://provider.example:8080/live/u/p/1.ts#Intent;scheme=http;type=video/*;action=android.intent.action.VIEW;end");
+  assert.doesNotMatch(intent, /package=/);
+});
+
+test("Android MX Player and mpv target their packages with a store fallback", () => {
+  const mx = buildBrowserExternalPlayerLaunch({ player: "mxplayer", platform: "android", mediaUrl: "https://cdn.example/a.mkv" });
+  assert.match(mx.href, /package=com\.mxtech\.videoplayer\.ad;/);
+  assert.match(mx.href, /S\.browser_fallback_url=https%3A%2F%2Fplay\.google\.com/);
+  const mpv = buildBrowserExternalPlayerLaunch({ player: "mpv", platform: "android", mediaUrl: "https://cdn.example/a.mkv" });
+  assert.match(mpv.href, /package=is\.xyz\.mpv;/);
+  assert.equal(getBrowserExternalPlayerStoreUrl({ player: "mpv", platform: "android" }), "https://play.google.com/store/apps/details?id=is.xyz.mpv");
+});
+
+test("the iOS system player opens the stream itself in Safari's native player", () => {
+  const launch = buildBrowserExternalPlayerLaunch({ player: "system", platform: "ios", mediaUrl: "https://cdn.example/a.m3u8" });
+  assert.equal(launch.href, "https://cdn.example/a.m3u8");
+});
+
+test("the desktop system player downloads a one-entry M3U the OS opens in its default player", () => {
+  const launch = buildBrowserExternalPlayerLaunch({ player: "system", platform: "other", mediaUrl: "http://provider.example/live/1.ts", title: "BBC One\nHD" });
+  assert.equal(launch.download.filename, "BBC_One_HD.m3u");
+  assert.equal(launch.download.content, "#EXTM3U\n#EXTINF:-1,BBC One HD\nhttp://provider.example/live/1.ts\n");
+  assert.equal(buildSystemPlayerPlaylist({ mediaUrl: "blob:https://x/y" }), null);
+  let saved = null;
+  const runtime = {
+    Blob: class { constructor(parts, opts) { this.parts = parts; this.type = opts.type; } },
+    URL: { createObjectURL: (blob) => { saved = blob; return "blob:x"; }, revokeObjectURL: () => {} },
+    document: { body: { appendChild: () => {} }, createElement: () => ({ click() { this.clicked = true; }, remove() {} }) }
+  };
+  assert.equal(launchBrowserExternalPlayer({ runtime, download: launch.download }), true);
+  assert.equal(saved.type, "audio/x-mpegurl");
+});
+
+test("every player has one shared label", () => {
+  assert.equal(browserExternalPlayerLabel("system"), "System player");
+  assert.equal(browserExternalPlayerLabel("mxplayer"), "MX Player");
+  assert.equal(browserExternalPlayerLabel("disabled", "Off"), "Off");
 });

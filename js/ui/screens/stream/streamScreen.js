@@ -2458,7 +2458,7 @@ export const StreamScreen = {
     // Optional return convenience only: never allow binding failure to alter
     // the already-verified external-player launch path.
     await bindBrowserPushReturn({ token: prepared.handoff?.token });
-    launchBrowserExternalPlayer({ href: prepared.launch.href });
+    launchBrowserExternalPlayer({ href: prepared.launch.href, download: prepared.launch.download });
     return true;
   },
 

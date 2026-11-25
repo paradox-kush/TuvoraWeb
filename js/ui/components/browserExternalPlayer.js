@@ -10,8 +10,26 @@ const EXTERNAL_PLAYER_IDS = Object.freeze({
   LENNA: "lenna",
   INFUSE: "infuse",
   VLC: "vlc",
-  OUTPLAYER: "outplayer"
+  OUTPLAYER: "outplayer",
+  SYSTEM: "system",
+  MXPLAYER: "mxplayer",
+  MPV: "mpv"
 });
+
+const PLAYER_LABELS = Object.freeze({
+  system: "System player",
+  vlc: "VLC",
+  infuse: "Infuse",
+  outplayer: "Outplayer",
+  lenna: "Lenna",
+  mxplayer: "MX Player",
+  mpv: "mpv"
+});
+
+/** One label per player, shared by Settings, the player menu and the playback fallback. */
+export function browserExternalPlayerLabel(player, disabledLabel = "Disabled") {
+  return PLAYER_LABELS[normalizeBrowserExternalPlayer(player)] || disabledLabel;
+}
 
 const IOS_APP_STORE_URLS = Object.freeze({
   lenna: "https://apps.apple.com/app/lenna-video-library-player/id6502967807",
@@ -21,6 +39,15 @@ const IOS_APP_STORE_URLS = Object.freeze({
 });
 
 const ANDROID_VLC_STORE_URL = "https://play.google.com/store/apps/details?id=org.videolan.vlc";
+const ANDROID_PACKAGES = Object.freeze({
+  mxplayer: "com.mxtech.videoplayer.ad",
+  mpv: "is.xyz.mpv"
+});
+const ANDROID_STORE_URLS = Object.freeze({
+  vlc: ANDROID_VLC_STORE_URL,
+  mxplayer: "https://play.google.com/store/apps/details?id=com.mxtech.videoplayer.ad",
+  mpv: "https://play.google.com/store/apps/details?id=is.xyz.mpv"
+});
 
 // Keep the policy beside the URL builders: a callback can mean a real progress
 // report, a return observation, or merely a best-effort manual fallback.
@@ -61,17 +88,24 @@ export function getBrowserExternalPlayerOptions(runtime = globalThis) {
   const platform = getBrowserExternalPlayerPlatform(runtime);
   if (platform === "ios") {
     return [
-      EXTERNAL_PLAYER_IDS.LENNA,
-      EXTERNAL_PLAYER_IDS.OUTPLAYER,
-      EXTERNAL_PLAYER_IDS.INFUSE,
+      EXTERNAL_PLAYER_IDS.SYSTEM,
       EXTERNAL_PLAYER_IDS.VLC,
+      EXTERNAL_PLAYER_IDS.INFUSE,
+      EXTERNAL_PLAYER_IDS.OUTPLAYER,
+      EXTERNAL_PLAYER_IDS.LENNA,
       EXTERNAL_PLAYER_IDS.DISABLED
     ];
   }
   if (platform === "android") {
-    return [EXTERNAL_PLAYER_IDS.DISABLED, EXTERNAL_PLAYER_IDS.VLC];
+    return [
+      EXTERNAL_PLAYER_IDS.DISABLED,
+      EXTERNAL_PLAYER_IDS.SYSTEM,
+      EXTERNAL_PLAYER_IDS.VLC,
+      EXTERNAL_PLAYER_IDS.MXPLAYER,
+      EXTERNAL_PLAYER_IDS.MPV
+    ];
   }
-  return [EXTERNAL_PLAYER_IDS.DISABLED];
+  return [EXTERNAL_PLAYER_IDS.DISABLED, EXTERNAL_PLAYER_IDS.SYSTEM];
 }
 
 export function isTransferableExternalMediaUrl(value) {
@@ -157,6 +191,36 @@ export function buildAndroidVlcLaunchUrl({ mediaUrl } = {}) {
   return `intent://${path}#Intent;scheme=${parsed.protocol.slice(0, -1)};package=org.videolan.vlc;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(ANDROID_VLC_STORE_URL)};end`;
 }
 
+function androidIntentData(mediaUrl) {
+  const parsed = new URL(String(mediaUrl));
+  const path = `${parsed.hostname}${parsed.port ? `:${parsed.port}` : ""}${parsed.pathname}${parsed.search}${parsed.hash ? `%23${encodeURIComponent(parsed.hash.slice(1))}` : ""}`;
+  return { path, scheme: parsed.protocol.slice(0, -1) };
+}
+
+/**
+ * ACTION_VIEW on the stream. With a package it goes to that app (store page if missing);
+ * without one, Android shows its own chooser of installed video players.
+ */
+export function buildAndroidPlayerIntentUrl({ mediaUrl, packageName = "", storeUrl = "" } = {}) {
+  if (!isTransferableExternalMediaUrl(mediaUrl)) return "";
+  const { path, scheme } = androidIntentData(mediaUrl);
+  const target = packageName ? `package=${packageName};` : "type=video/*;";
+  const fallback = storeUrl ? `S.browser_fallback_url=${encodeURIComponent(storeUrl)};` : "";
+  return `intent://${path}#Intent;scheme=${scheme};${target}action=android.intent.action.VIEW;${fallback}end`;
+}
+
+/** A one-entry M3U playlist: desktop OSes open .m3u in their default video player. */
+export function buildSystemPlayerPlaylist({ mediaUrl, title = "" } = {}) {
+  if (!isTransferableExternalMediaUrl(mediaUrl)) return null;
+  const safeTitle = String(title || "Tuvora").replace(/[\r\n]+/g, " ").trim() || "Tuvora";
+  const fileStem = safeTitle.replace(/[^\w.-]+/g, "_").slice(0, 60) || "tuvora";
+  return {
+    filename: `${fileStem}.m3u`,
+    mimeType: "audio/x-mpegurl",
+    content: `#EXTM3U\n#EXTINF:-1,${safeTitle}\n${String(mediaUrl)}\n`
+  };
+}
+
 export function buildOutplayerLaunchUrl({ mediaUrl, externalReturnToken, externalReturnOrigin, resumePositionSeconds = 0, knownDurationMs = 0 } = {}) {
   if (!isTransferableExternalMediaUrl(mediaUrl)) return "";
   const callbacks = createOutplayerReturnCallbacks({ token: externalReturnToken, returnOrigin: externalReturnOrigin });
@@ -192,6 +256,23 @@ export function buildBrowserExternalPlayerLaunch({ player, platform, mediaUrl, t
   }
   if (platform === "android" && selectedPlayer === EXTERNAL_PLAYER_IDS.VLC) {
     return { href: buildAndroidVlcLaunchUrl({ mediaUrl }), storeUrl: ANDROID_VLC_STORE_URL };
+  }
+  if (platform === "android" && selectedPlayer === EXTERNAL_PLAYER_IDS.SYSTEM) {
+    return { href: buildAndroidPlayerIntentUrl({ mediaUrl }), storeUrl: "" };
+  }
+  if (platform === "android" && ANDROID_PACKAGES[selectedPlayer]) {
+    return {
+      href: buildAndroidPlayerIntentUrl({ mediaUrl, packageName: ANDROID_PACKAGES[selectedPlayer], storeUrl: ANDROID_STORE_URLS[selectedPlayer] }),
+      storeUrl: ANDROID_STORE_URLS[selectedPlayer]
+    };
+  }
+  if (platform === "ios" && selectedPlayer === EXTERNAL_PLAYER_IDS.SYSTEM) {
+    // Opening the stream itself hands it to Safari's native (AVKit) player.
+    return { href: String(mediaUrl), storeUrl: "" };
+  }
+  if (selectedPlayer === EXTERNAL_PLAYER_IDS.SYSTEM) {
+    const download = buildSystemPlayerPlaylist({ mediaUrl, title });
+    return download ? { href: "download:", download, storeUrl: "" } : null;
   }
   return null;
 }
@@ -256,7 +337,7 @@ export function prepareBrowserExternalPlaybackLaunch({
 export function getBrowserExternalPlayerStoreUrl({ player, platform } = {}) {
   const selectedPlayer = normalizeBrowserExternalPlayer(player);
   if (platform === "ios") return IOS_APP_STORE_URLS[selectedPlayer] || "";
-  if (platform === "android" && selectedPlayer === EXTERNAL_PLAYER_IDS.VLC) return ANDROID_VLC_STORE_URL;
+  if (platform === "android") return ANDROID_STORE_URLS[selectedPlayer] || "";
   return "";
 }
 
@@ -264,8 +345,10 @@ export function getBrowserExternalPlayerStoreUrl({ player, platform } = {}) {
 // unavailable-app experience, so Nuvio never stacks a speculative popup.
 export function launchBrowserExternalPlayer({
   runtime = globalThis,
-  href = ""
+  href = "",
+  download = null
 } = {}) {
+  if (download) return saveBrowserDownload({ runtime, ...download });
   if (!href || typeof runtime?.location?.assign !== "function") return false;
   runtime.location.assign(href);
   return true;
@@ -293,3 +376,19 @@ export async function copyBrowserExternalStreamLink({ runtime = globalThis, medi
 }
 
 export { EXTERNAL_PLAYER_IDS };
+
+function saveBrowserDownload({ runtime = globalThis, filename, mimeType, content } = {}) {
+  const doc = runtime?.document;
+  const urlApi = runtime?.URL;
+  if (!doc?.createElement || typeof urlApi?.createObjectURL !== "function" || typeof runtime?.Blob !== "function") return false;
+  const objectUrl = urlApi.createObjectURL(new runtime.Blob([content], { type: mimeType }));
+  const anchor = doc.createElement("a");
+  anchor.href = objectUrl;
+  anchor.download = filename;
+  anchor.rel = "noopener";
+  doc.body?.appendChild?.(anchor);
+  anchor.click();
+  anchor.remove?.();
+  setTimeout(() => urlApi.revokeObjectURL?.(objectUrl), 30_000);
+  return true;
+}

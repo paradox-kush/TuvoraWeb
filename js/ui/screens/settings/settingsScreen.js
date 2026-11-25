@@ -53,6 +53,7 @@ import { openWatchPartyDialog } from "../player/watchPartyDialog.js";
 import { SupabaseApi } from "../../../data/remote/supabase/supabaseApi.js";
 import { Platform } from "../../../platform/index.js";
 import {
+  browserExternalPlayerLabel,
   getBrowserExternalPlayerPlatform,
   getBrowserExternalPlayerOptions,
   getBrowserExternalPlayerStoreUrl,
@@ -6357,17 +6358,8 @@ export const SettingsScreen = {
       this.actionMap.set("playback:externalPlayer", () => {
         const options = getBrowserExternalPlayerOptions().map((id) => ({
           id,
-          label:
-            id === "outplayer"
-              ? "Outplayer"
-              : id === "lenna"
-              ? "Lenna"
-              : id === "infuse"
-                ? "Infuse"
-                : id === "vlc"
-                  ? "VLC"
-                  : t("common.disabled", {}, "Disabled")
-          , subtitle: id === "lenna" ? "Recommended" : ""
+          label: browserExternalPlayerLabel(id, t("common.disabled", {}, "Disabled")),
+          subtitle: id === "system" ? "Recommended" : ""
         }));
         this.openOptionDialog({
           title: "Play with external player",
@@ -6878,16 +6870,7 @@ export const SettingsScreen = {
                 focusKey: "playback:externalPlayer",
                 title: "Play with external player",
                 subtitle: "Choose the default player used after selecting a compatible stream.",
-                value:
-                  normalizeBrowserExternalPlayer(model.player.browserExternalPlayer) === "lenna"
-                    ? "Lenna"
-                    : normalizeBrowserExternalPlayer(model.player.browserExternalPlayer) === "outplayer"
-                      ? "Outplayer"
-                      : normalizeBrowserExternalPlayer(model.player.browserExternalPlayer) === "infuse"
-                      ? "Infuse"
-                      : normalizeBrowserExternalPlayer(model.player.browserExternalPlayer) === "vlc"
-                        ? "VLC"
-                        : t("common.disabled", {}, "Disabled"),
+                value: browserExternalPlayerLabel(model.player.browserExternalPlayer, t("common.disabled", {}, "Disabled")),
                 classes: "settings-playback-external-player-row"
               })
             : ""
@@ -6914,7 +6897,7 @@ export const SettingsScreen = {
           })()
             ? (() => {
                 const player = normalizeBrowserExternalPlayer(model.player.browserExternalPlayer);
-                const playerName = player === "outplayer" ? "Outplayer" : player === "lenna" ? "Lenna" : player === "infuse" ? "Infuse" : "VLC";
+                const playerName = browserExternalPlayerLabel(player);
                 return this.renderActionRow({
                   focusKey: `playback:getExternalPlayer:${player}`,
                   title: `Get ${playerName}`,
