@@ -123,3 +123,24 @@ export function fallbackActionsFor({
   actions.push({ id: "back" });
   return actions;
 }
+
+/**
+ * How the error screen arranges the actions: one primary (the Tuvora app, else the first
+ * player, else copy link, else Back), the other players as a compact group, and the rest quiet.
+ * The tap-to-play prompt has Play as its primary and offers only Back beside it.
+ */
+export function layoutFallbackActions(actions = [], { awaitingGesture = false } = {}) {
+  const back = { id: "back" };
+  if (awaitingGesture) return { primary: { id: "play" }, players: [], quiet: [back] };
+  const list = (Array.isArray(actions) ? actions : []).filter((action) => action?.id && action.id !== "back");
+  const primary =
+    list.find((action) => action.id === "open-app") ||
+    list.find((action) => action.id === "player") ||
+    list.find((action) => action.id === "copy-link") ||
+    back;
+  return {
+    primary,
+    players: list.filter((action) => action.id === "player" && action !== primary),
+    quiet: [...list.filter((action) => action.id === "copy-link" && action !== primary), ...(primary === back ? [] : [back])]
+  };
+}

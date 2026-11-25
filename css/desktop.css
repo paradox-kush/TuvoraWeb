@@ -2958,41 +2958,16 @@ html.desktop-browser {
 
 /* Desktop Player Step 1 panel refinement: use the existing dialog markup and
    actions, but replace the Android-TV dimensions with compact browser panels. */
-.desktop-browser #player .player-startup-error-shell {
-  width: min(100%, 560px);
-  gap: 16px;
-}
-
-.desktop-browser #player .player-startup-error-title {
-  font-size: 24px;
-  font-weight: 600;
-}
-
-.desktop-browser #player .player-startup-error-message {
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-.desktop-browser #player .player-startup-error-button {
-  min-width: 120px;
-  min-height: 44px;
-  padding: 10px 20px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  box-shadow: none;
-}
-
-.desktop-browser #player .player-startup-error-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.desktop-browser #player .player-startup-error-button:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 3px;
+.desktop-browser #player .player-startup-error-overlay {
+  --pse-shell-width: 440px;
+  --pse-title-size: 22px;
+  --pse-message-size: 15px;
+  --pse-button-height: 48px;
+  --pse-button-size: 15px;
+  --pse-chip-height: 44px;
+  --pse-small-size: 13px;
+  --pse-badge-size: 52px;
+  --pse-gap: 20px;
 }
 
 .desktop-browser #player .player-modal-backdrop {

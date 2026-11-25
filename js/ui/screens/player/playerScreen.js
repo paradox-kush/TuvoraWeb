@@ -1,5 +1,5 @@
 import { PlayerController } from "../../../core/player/playerController.js";
-import { classifyBrowserPlaybackFailure, fallbackActionsFor, isBrowserMediaFailure } from "../../../core/player/browserPlaybackFallback.js";
+import { classifyBrowserPlaybackFailure, fallbackActionsFor, isBrowserMediaFailure, layoutFallbackActions } from "../../../core/player/browserPlaybackFallback.js";
 import {
   audioTrackLabelConflictsWithCodec,
   formatAudioCodecName,
@@ -5563,7 +5563,7 @@ export const PlayerScreen = {
           controlButtons: uiRoot.querySelector("#playerControlButtons"),
           timeLabel: uiRoot.querySelector("#playerTimeLabel"),
           startupErrorButton: uiRoot.querySelector(
-            "#playerStartupErrorOverlay .player-startup-error-button"
+            "#playerStartupErrorOverlay .player-startup-error-button.is-primary"
           )
         }
       : null;
@@ -5654,6 +5654,7 @@ export const PlayerScreen = {
     this.startupErrorMessage = "";
     this.startupErrorMediaCode = 0;
     this.startupErrorDetails = [];
+    this.startupErrorDetailsExpanded = false;
     this.startupFallbackActions = [];
     this.renderStartupErrorOverlay();
   },
@@ -5893,6 +5894,7 @@ export const PlayerScreen = {
     this.startupErrorMessage =
       String(message || "").trim() || t("player_error_playback_fallback", {}, "Playback error");
     this.startupErrorMediaCode = Number(mediaErrorCode || 0);
+    this.startupErrorDetailsExpanded = false;
     this.startupErrorDetails = Array.isArray(details)
       ? details.map((line) => cleanPlaybackDiagnosticValue(line)).filter(Boolean)
       : this.getPlaybackErrorDetailLines({
@@ -6123,15 +6125,57 @@ export const PlayerScreen = {
     }
   },
 
+  /** One error-screen button. `tone`: primary | chip | quiet. */
+  renderStartupErrorAction(action, tone = "quiet") {
+    const playerLabel = action.id === "player" ? browserExternalPlayerLabel(action.player) : "";
+    const fullLabel =
+      action.id === "play" ? "Play"
+        : action.id === "open-app" ? "Open in Tuvora app"
+          : action.id === "player" ? `Open in ${playerLabel}`
+            : action.id === "copy-link" ? "Copy stream link"
+              : t("player_go_back", {}, "Go Back");
+    // Player chips sit under an "Or open in" heading, so they show the name alone.
+    const label = tone === "chip" ? playerLabel : fullLabel;
+    const value = action.id === "player" ? `player:${action.player}` : action.id;
+    const ariaLabel = label === fullLabel ? "" : ` aria-label="${escapeHtml(fullLabel)}"`;
+    return `<button class="player-startup-error-button is-${tone} focusable" type="button" tabindex="0" data-player-error-action="${escapeHtml(value)}"${ariaLabel}>${escapeHtml(label)}</button>`;
+  },
+
   renderStartupFallbackButtons() {
-    return (this.startupFallbackActions || []).map((action) => {
-      const label =
-        action.id === "open-app" ? "Open in Tuvora app"
-          : action.id === "player" ? `Open in ${browserExternalPlayerLabel(action.player)}`
-            : "Copy stream link";
-      const value = action.id === "player" ? `player:${action.player}` : action.id;
-      return `<button class="player-startup-error-button focusable" type="button" tabindex="0" data-player-error-action="${escapeHtml(value)}">${escapeHtml(label)}</button>`;
-    }).join("");
+    const layout = layoutFallbackActions(this.startupFallbackActions, { awaitingGesture: this.awaitingPlaybackGesture });
+    return `
+      <div class="player-startup-error-actions">
+        ${this.renderStartupErrorAction(layout.primary, "primary")}
+        ${
+          layout.players.length
+            ? `
+          <div class="player-startup-error-players" role="group" aria-labelledby="playerStartupErrorPlayersLabel">
+            <div class="player-startup-error-group-label" id="playerStartupErrorPlayersLabel">${layout.primary.id === "player" ? "Or open in" : "Or open in another player"}</div>
+            <div class="player-startup-error-chips">
+              ${layout.players.map((action) => this.renderStartupErrorAction(action, "chip")).join("")}
+            </div>
+          </div>
+        `
+            : ""
+        }
+        ${
+          layout.quiet.length
+            ? `<div class="player-startup-error-quiet">${layout.quiet.map((action) => this.renderStartupErrorAction(action, "quiet")).join("")}</div>`
+            : ""
+        }
+      </div>
+    `;
+  },
+
+  /** Technical lines stay out of the way until asked for; the toggle keeps focus where it is. */
+  toggleStartupErrorDetails() {
+    this.startupErrorDetailsExpanded = !this.startupErrorDetailsExpanded;
+    const overlay = this.uiRefs?.startupErrorOverlay;
+    const toggle = overlay?.querySelector?.('[data-player-error-action="details"]');
+    const panel = overlay?.querySelector?.(".player-startup-error-details");
+    toggle?.setAttribute?.("aria-expanded", this.startupErrorDetailsExpanded ? "true" : "false");
+    if (panel) panel.hidden = !this.startupErrorDetailsExpanded;
+    return true;
   },
 
   async runStartupFallbackAction(value = "") {
@@ -6178,29 +6222,43 @@ export const PlayerScreen = {
     const detailLines = Array.isArray(this.startupErrorDetails)
       ? this.startupErrorDetails.filter(Boolean)
       : [];
+    const gesture = Boolean(this.awaitingPlaybackGesture);
+    const expanded = Boolean(this.startupErrorDetailsExpanded);
+    const badgeIcon = gesture
+      ? '<path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.14-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14z" fill="currentColor"/>'
+      : '<path d="M12 8v5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="9.2" fill="none" stroke="currentColor" stroke-width="2"/>';
     overlay.innerHTML = `
-      <div class="player-startup-error-shell">
-        <div class="player-startup-error-title">${this.awaitingPlaybackGesture ? "Ready to play" : escapeHtml(t("player_error_title", {}, "Playback Error"))}</div>
-        <div class="player-startup-error-message">${escapeHtml(message)}</div>
+      <div class="player-startup-error-shell${gesture ? " is-gesture" : ""}">
+        <div class="player-startup-error-head">
+          <div class="player-startup-error-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">${badgeIcon}</svg>
+          </div>
+          <div class="player-startup-error-title">${gesture ? "Ready to play" : escapeHtml(t("player_error_title", {}, "Playback Error"))}</div>
+          <div class="player-startup-error-message">${escapeHtml(message)}</div>
+        </div>
+        ${this.renderStartupFallbackButtons()}
         ${
           detailLines.length
             ? `
-          <div class="player-startup-error-details" aria-label="${escapeHtml(t("player_error_details", {}, "Playback error details"))}">
-            ${detailLines.map((line) => `<div>${escapeHtml(line)}</div>`).join("")}
+          <div class="player-startup-error-diagnostics">
+            <button class="player-startup-error-button is-toggle focusable" type="button" tabindex="0" data-player-error-action="details" aria-expanded="${expanded ? "true" : "false"}" aria-controls="playerStartupErrorDetails">
+              <span>Details</span>
+              <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="player-startup-error-details" id="playerStartupErrorDetails" aria-label="${escapeHtml(t("player_error_details", {}, "Playback error details"))}"${expanded ? "" : " hidden"}>
+              ${detailLines.map((line) => `<div>${escapeHtml(line)}</div>`).join("")}
+            </div>
           </div>
         `
             : ""
         }
-        ${this.awaitingPlaybackGesture ? '<button class="player-startup-error-button focusable focused" type="button" data-player-error-action="play">Play</button>' : ""}
-        ${this.awaitingPlaybackGesture ? "" : this.renderStartupFallbackButtons()}
-        <button class="player-startup-error-button focusable" type="button" tabindex="0" data-player-error-action="back">
-          ${escapeHtml(t("player_go_back", {}, "Go Back"))}
-        </button>
       </div>
     `;
     this.uiRefs = {
       ...(this.uiRefs || {}),
-      startupErrorButton: overlay.querySelector(".player-startup-error-button")
+      startupErrorButton:
+        overlay.querySelector(".player-startup-error-button.is-primary") ||
+        overlay.querySelector(".player-startup-error-button")
     };
   },
 
@@ -16326,6 +16384,9 @@ export const PlayerScreen = {
       if (String(errorAction.dataset.playerErrorAction || "") === "back") {
         this.navigateBackToStreamScreen();
         return true;
+      }
+      if (errorAction.dataset.playerErrorAction === "details") {
+        return this.toggleStartupErrorDetails();
       }
       return this.runStartupFallbackAction(String(errorAction.dataset.playerErrorAction || ""));
     }

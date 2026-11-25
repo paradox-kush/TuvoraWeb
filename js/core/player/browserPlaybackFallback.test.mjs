@@ -5,6 +5,7 @@ import {
   buildTuvoraAppLink,
   classifyBrowserPlaybackFailure,
   fallbackActionsFor,
+  layoutFallbackActions,
   isBrowserMediaFailure,
   orderExternalPlayers
 } from "./browserPlaybackFallback.js";
@@ -140,4 +141,36 @@ test("a stall with no error code is offered the app and players as an unknown br
   const failure = classifyBrowserPlaybackFailure({ pageProtocol: "https:", mediaUrl: "https://cdn.example/a.m3u8" });
   assert.equal(failure.reason, BrowserPlaybackFailure.Unknown);
   assert.match(failure.message, /didn't play in the browser/);
+});
+
+test("the error screen gets one primary action: the app, else the first player, else Back", () => {
+  const app = { id: "open-app", href: "tuvora://meta?type=movie&id=tt1" };
+  const vlc = { id: "player", player: "vlc" };
+  const mpv = { id: "player", player: "mpv" };
+  const copy = { id: "copy-link" };
+
+  const full = layoutFallbackActions([app, vlc, mpv, copy]);
+  assert.equal(full.primary, app);
+  assert.deepEqual(full.players, [vlc, mpv]);
+  assert.deepEqual(ids(full.quiet), ["copy-link", "back"]);
+
+  const noApp = layoutFallbackActions([vlc, mpv, copy]);
+  assert.equal(noApp.primary, vlc);
+  assert.deepEqual(noApp.players, [mpv]);
+  assert.deepEqual(ids(noApp.quiet), ["copy-link", "back"]);
+
+  const backOnly = layoutFallbackActions([]);
+  assert.deepEqual(ids([backOnly.primary]), ["back"]);
+  assert.deepEqual(backOnly.players, []);
+  assert.deepEqual(backOnly.quiet, [], "Back is never offered twice");
+
+  // A stray Back in the input (fallbackActionsFor appends one) is not duplicated either.
+  assert.deepEqual(ids(layoutFallbackActions([app, { id: "back" }]).quiet), ["back"]);
+});
+
+test("the tap-to-play prompt offers Play first and only Back beside it", () => {
+  const layout = layoutFallbackActions([{ id: "player", player: "vlc" }], { awaitingGesture: true });
+  assert.deepEqual(ids([layout.primary]), ["play"]);
+  assert.deepEqual(layout.players, []);
+  assert.deepEqual(ids(layout.quiet), ["back"]);
 });
