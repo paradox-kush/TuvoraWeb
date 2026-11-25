@@ -1,0 +1,84 @@
+# Tuvora Web at https://watch.tuvora.co. Static nginx frontend only: no playback, Trakt, debrid
+# or push bridges yet (their /api/* routes answer 502 until they are deployed). Reached through
+# the existing cloudflared tunnel -> ingress-nginx, like every other tuvora.co host.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tuvora-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tuvora-web
+  namespace: tuvora-web
+  labels: { app: tuvora-web }
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels: { app: tuvora-web }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: { maxUnavailable: 0, maxSurge: 1 }
+  template:
+    metadata:
+      labels: { app: tuvora-web }
+    spec:
+      # Refreshed by the deploy job from the workflow's GITHUB_TOKEN.
+      imagePullSecrets:
+        - name: ghcr
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels: { app: tuvora-web }
+      containers:
+        - name: web
+          image: ghcr.io/paradox-kush/tuvoraweb:latest # CI rewrites this to an immutable sha- tag
+          imagePullPolicy: IfNotPresent
+          ports:
+            - { name: http, containerPort: 80 }
+          # Browser-public values only: the image's entrypoint writes them into nuvio.env.js,
+          # which every visitor downloads. Never put a secret here.
+          env:
+            - { name: NUVIO_SUPABASE_URL, value: https://qsonncwknzdixurjyqap.supabase.co }
+            - { name: NUVIO_SUPABASE_ANON_KEY, value: sb_publishable_WNnOu03ivQUcqVCxoREBMA_L9sgl94X }
+            - { name: NUVIO_SUPABASE_FALLBACK_URL, value: "" }
+            - { name: TV_LOGIN_WEB_BASE_URL, value: https://qsonncwknzdixurjyqap.functions.supabase.co/tv-login-approve }
+            - { name: SIMKL_APP_NAME, value: tuvora }
+            - { name: SPONSOR_NAMES, value: "" }
+          resources:
+            requests: { cpu: 10m, memory: 32Mi }
+            limits: { cpu: 250m, memory: 128Mi }
+          readinessProbe:
+            httpGet: { path: /, port: http }
+            initialDelaySeconds: 2
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /, port: http }
+            initialDelaySeconds: 10
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tuvora-web
+  namespace: tuvora-web
+spec:
+  selector: { app: tuvora-web }
+  ports:
+    - { name: http, port: 80, targetPort: http }
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tuvora-web
+  namespace: tuvora-web
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: watch.tuvora.co
+      http:
+        paths:
+          - { path: /, pathType: Prefix, backend: { service: { name: tuvora-web, port: { name: http } } } }

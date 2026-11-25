@@ -1,0 +1,65 @@
+# Self-hosted GitHub Actions runner for this repo, mirroring streambridge-k3s-runner and
+# voicelayer-k3s-runner. Deploys run *inside* the cluster, so the Kubernetes API never has to be
+# reachable from GitHub and no kubeconfig lives in a repo secret.
+#
+# Reuses the existing `github-runner-auth` secret in this namespace (key: access_token) — a GitHub
+# PAT with repo scope. If the token doesn't cover paradox-kush/TuvoraWeb, update that secret.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tuvoraweb-k3s-runner
+  namespace: github-actions
+---
+# cluster-admin matches the existing runners. Tightening all three to a namespace-scoped Role is
+# worth doing at some point, but doing it for this one alone would just be inconsistent.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tuvoraweb-k3s-runner-cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: tuvoraweb-k3s-runner
+    namespace: github-actions
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tuvoraweb-k3s-runner
+  namespace: github-actions
+  labels: { app: tuvoraweb-k3s-runner }
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector:
+    matchLabels: { app: tuvoraweb-k3s-runner }
+  template:
+    metadata:
+      labels: { app: tuvoraweb-k3s-runner }
+    spec:
+      serviceAccountName: tuvoraweb-k3s-runner
+      containers:
+        - name: runner
+          image: docker.io/myoung34/github-runner:latest
+          imagePullPolicy: Always
+          env:
+            - { name: REPO_URL, value: https://github.com/paradox-kush/TuvoraWeb }
+            - { name: RUNNER_SCOPE, value: repo }
+            - { name: LABELS, value: k3s }
+            - { name: RUNNER_NAME_PREFIX, value: tuvoraweb-k3s }
+            - { name: RUNNER_WORKDIR, value: /runner/_work }
+            - { name: EPHEMERAL, value: "true" }
+            - { name: DISABLE_AUTO_UPDATE, value: "true" }
+            - name: ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef: { name: github-runner-auth, key: access_token }
+          resources:
+            requests: { cpu: 50m, memory: 400Mi }
+            limits: { cpu: "1", memory: 768Mi }
+          volumeMounts:
+            - { mountPath: /runner/_work, name: work }
+      volumes:
+        - { name: work, emptyDir: {} }
