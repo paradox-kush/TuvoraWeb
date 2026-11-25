@@ -11,6 +11,7 @@ const ROUTE_TITLES = {
   calendar: "Calendar",
   sports: "Sports",
   sportsGame: "Sports",
+  liveTv: "Live TV",
   settings: "Settings",
   profileSelection: "Profiles",
   authSignIn: "Sign In",

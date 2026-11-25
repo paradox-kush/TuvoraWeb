@@ -7241,9 +7241,12 @@ export const PlayerScreen = {
     } catch (_) {
       // Route cleanup will make a second best-effort stop if native teardown throws.
     }
-    const shouldReturnToStream = !forceDetail && this.shouldReturnToStreamOnBack();
-    if (shouldReturnToStream) {
-      const historyBack = Router.backToPreviousNuvioRoute?.("stream");
+    // A player opened from a screen with no Stream or Detail parent (Live TV) names the
+    // route it came from, and Back returns there instead of to a Stream page with no sources.
+    const returnRoute = this.getPlayerReturnRoute();
+    const shouldReturnToStream = !returnRoute && !forceDetail && this.shouldReturnToStreamOnBack();
+    if (shouldReturnToStream || returnRoute) {
+      const historyBack = Router.backToPreviousNuvioRoute?.(returnRoute || "stream");
       if (historyBack?.accepted) {
         void historyBack.settled.then((landed) => {
           this.playerBackNavigationInProgress = false;
@@ -7254,26 +7257,32 @@ export const PlayerScreen = {
           // never going to come. Recover onto the synthetic route instead of
           // making them press Back again.
           if (!landed && Router.getCurrent?.() === "player") {
-            this.navigateToPlayerBackFallback({ shouldReturnToStream, streamParams });
+            this.navigateToPlayerBackFallback({ shouldReturnToStream, streamParams, returnRoute });
           }
         });
         return true;
       }
     }
 
-    this.navigateToPlayerBackFallback({ shouldReturnToStream, streamParams });
+    this.navigateToPlayerBackFallback({ shouldReturnToStream, streamParams, returnRoute });
     return true;
+  },
+
+  getPlayerReturnRoute() {
+    const route = String(this.params?.returnRoute || "");
+    return route && route !== "player" && Router.routes?.[route] ? route : "";
   },
 
   // Direct, legacy, and malformed Player entries have no proven Stream parent,
   // and a history Back that failed to land leaves the player in the same state.
-  navigateToPlayerBackFallback({ shouldReturnToStream, streamParams }) {
+  navigateToPlayerBackFallback({ shouldReturnToStream, streamParams, returnRoute = "" }) {
     this.playerBackNavigationInProgress = true;
     Router.suppressNextPopstate?.(1500);
     Router.ignoreSinglePopstate?.();
-    const targetRoute = shouldReturnToStream ? "stream" : this.params?.itemId ? "detail" : "home";
-    const targetParams =
-      targetRoute === "stream"
+    const targetRoute = returnRoute || (shouldReturnToStream ? "stream" : this.params?.itemId ? "detail" : "home");
+    const targetParams = returnRoute
+      ? {}
+      : targetRoute === "stream"
         ? streamParams
         : targetRoute === "detail"
           ? this.buildDetailRouteParamsFromPlayer()
@@ -16548,7 +16557,17 @@ export const PlayerScreen = {
     );
   },
 
-  consumeBackRequest() {
+  consumeBackRequest(request = null) {
+    // The browser's own Back already landed on the screen this player was opened from
+    // (Live TV): let history reveal it, as the router does for a Stream parent.
+    if (
+      request?.source === "popstate" &&
+      request.targetRoute &&
+      request.targetRoute === this.getPlayerReturnRoute() &&
+      !this.hasBackDismissableOverlay?.()
+    ) {
+      return false;
+    }
     if (this.isStartupErrorVisible()) {
       if (this.navigateBackToStreamScreen()) {
         return true;

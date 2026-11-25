@@ -1,6 +1,7 @@
 import { CalendarScreen } from "../screens/calendar/calendarScreen.js";
 import { SportsScreen } from "../screens/sports/sportsScreen.js";
 import { SportsGameScreen } from "../screens/sports/sportsGameScreen.js";
+import { LiveTvScreen } from "../screens/livetv/liveTvScreen.js";
 import { HomeScreen } from "../screens/home/homeScreen.js";
 import { PlayerScreen } from "../screens/player/playerScreen.js";
 import { AccountScreen } from "../screens/account/accountScreen.js";
@@ -67,6 +68,8 @@ function getBrowserPullRefreshHandler(routeName, screen) {
       return () => screen.loadLibrary?.(true);
     case "sports":
       return () => screen.tick?.(true);
+    case "liveTv":
+      return () => screen.refresh?.();
     case "detail":
       return () => screen.reloadDetailContent?.({ reason: "pull-to-refresh" }) || screen.loadDetail?.();
     case "castDetail":
@@ -194,6 +197,7 @@ export const Router = {
     calendar: CalendarScreen,
     sports: SportsScreen,
     sportsGame: SportsGameScreen,
+    liveTv: LiveTvScreen,
     search: SearchScreen,
     discover: DiscoverScreen,
     settings: SettingsScreen,

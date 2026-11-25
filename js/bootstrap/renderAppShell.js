@@ -16,6 +16,7 @@ const APP_SHELL = `
     <div id="calendar" class="screen"></div>
     <div id="sports" class="screen"></div>
     <div id="sportsGame" class="screen"></div>
+    <div id="liveTv" class="screen"></div>
     <div id="search" class="screen"></div>
     <div id="discover" class="screen"></div>
     <div id="settings" class="screen"></div>

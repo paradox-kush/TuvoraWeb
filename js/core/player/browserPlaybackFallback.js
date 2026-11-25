@@ -92,6 +92,8 @@ export function buildTuvoraAppLink({ type = "", id = "" } = {}) {
   return `tuvora://meta?type=${encodeURIComponent(cleanType)}&id=${encodeURIComponent(cleanId)}`;
 }
 
+const LIVE_ITEM_TYPES = new Set(["channel", "live", "tvchannel"]);
+
 function isTransferable(url) {
   const protocol = protocolOf(url);
   return protocol === "http:" || protocol === "https:";
@@ -113,7 +115,11 @@ export function fallbackActionsFor({
 } = {}) {
   const actions = [];
   if (BROWSER_LIMITS.has(reason)) {
-    const href = buildTuvoraAppLink({ type: contentType, id: contentId });
+    // Live channels have no app route yet (AppUrlBridge knows only meta/party/setup), so a
+    // meta link for one would open the wrong screen. Proposed route: docs/iptv-web.md.
+    const href = LIVE_ITEM_TYPES.has(String(contentType || "").toLowerCase())
+      ? ""
+      : buildTuvoraAppLink({ type: contentType, id: contentId });
     if (href) actions.push({ id: "open-app", href });
     if (isTransferable(mediaUrl)) {
       orderExternalPlayers(players, preferredPlayer).forEach((player) => actions.push({ id: "player", player }));

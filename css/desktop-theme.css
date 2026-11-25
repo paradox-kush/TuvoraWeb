@@ -1006,3 +1006,106 @@ html.desktop-browser .settings-shell .settings-dialog .settings-hero-catalog-opt
 
 .desktop-browser .settings-shell .settings-episode-notifications { margin-top: 16px; }
 .desktop-browser .settings-shell .settings-episode-notifications h3 { margin: 4px 14px 12px; font-size: 18px; }
+
+/* Live TV: synced IPTV playlists, said honestly per playlist. */
+.desktop-browser .live-tv-main { max-width: 1480px; min-height: 100dvh; margin-inline: auto; padding: 112px clamp(20px, 3.4vw, 64px) 48px; }
+.desktop-browser .live-tv-heading { margin-bottom: 24px; }
+.desktop-browser .live-tv-heading h1 { margin: 0 0 8px; font-size: 32px; line-height: 40px; font-weight: 600; }
+.desktop-browser .live-tv-heading p { margin: 0; font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+.desktop-browser .live-tv-playlists { position: relative; display: flex; gap: 8px; margin-bottom: 24px; padding: 2px; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+.desktop-browser .live-tv-playlists::-webkit-scrollbar, .desktop-browser .live-tv-groups::-webkit-scrollbar { display: none; }
+.desktop-browser .live-tv-playlists[hidden], .desktop-browser .live-tv-guide-failed[hidden] { display: none; }
+.desktop-browser .live-tv-playlist { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 12px; max-width: min(360px, 82vw); min-height: 48px; padding: 8px 8px 8px 16px; border: 0; border-radius: 14px; color: var(--text-secondary); background: var(--desktop-surface); font-size: 15px; line-height: 20px; font-weight: 600; }
+.desktop-browser .live-tv-playlist:hover { background: var(--desktop-hover); }
+.desktop-browser .live-tv-playlist.is-selected { color: var(--text-color); background: var(--desktop-selected); }
+.desktop-browser .live-tv-playlist-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.desktop-browser .live-tv-badge { flex-shrink: 0; padding: 4px 10px; border-radius: 999px; font-size: 12px; line-height: 16px; font-weight: 600; white-space: nowrap; color: var(--text-secondary); background: rgb(255 255 255 / 0.08); }
+.desktop-browser .live-tv-badge.is-good { color: #7ddc9a; background: rgb(125 220 154 / 0.12); }
+.desktop-browser .live-tv-badge.is-warn { color: #f2c14e; background: rgb(242 193 78 / 0.12); }
+.desktop-browser .live-tv-badge.is-bad { color: #ff9a8f; background: rgb(255 154 143 / 0.12); }
+.desktop-browser .live-tv-badge.is-muted { color: var(--text-tertiary); background: rgb(255 255 255 / 0.06); }
+.desktop-browser .live-tv-browser { display: grid; grid-template-columns: 264px minmax(0, 1fr); align-items: start; gap: 24px; }
+.desktop-browser .live-tv-groups { position: sticky; top: 96px; display: grid; gap: 2px; max-height: calc(100dvh - 120px); padding: 8px; overflow-y: auto; border-radius: var(--desktop-radius); background: var(--desktop-surface); scrollbar-width: none; }
+.desktop-browser .live-tv-group { display: flex; align-items: center; gap: 8px; min-width: 0; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 10px; text-align: left; color: var(--text-secondary); background: transparent; font-size: 14px; line-height: 20px; }
+.desktop-browser .live-tv-group:hover { background: var(--desktop-hover); }
+.desktop-browser .live-tv-group.is-selected { color: var(--text-color); background: var(--desktop-selected); font-weight: 600; }
+.desktop-browser .live-tv-group .material-icons { font-size: 18px; color: var(--secondary-color); }
+.desktop-browser .live-tv-group-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.desktop-browser .live-tv-group-count { flex-shrink: 0; font-size: 12px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.desktop-browser .live-tv-channels { min-width: 0; scroll-margin-top: 96px; }
+.desktop-browser .live-tv-toolbar { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+.desktop-browser .live-tv-search { display: flex; flex: 1; align-items: center; gap: 10px; max-width: 440px; height: 48px; padding: 0 14px; border-radius: 14px; color: var(--text-secondary); background: var(--desktop-surface); }
+.desktop-browser .live-tv-search:focus-within { outline: 2px solid var(--focus-color); outline-offset: 2px; }
+.desktop-browser .live-tv-search .material-icons { font-size: 22px; }
+/* Out-specifies the app-wide input boundary: this field's surface is its label. */
+html.desktop-browser .live-tv-main .live-tv-search input[type="search"]:not([hidden]) { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; border-radius: 0; color: var(--text-color); background: transparent; font-size: 16px; }
+/* The field's ring is drawn on its rounded label, so the bare input inside shows none. */
+html.desktop-browser .live-tv-search input:is(:focus, :focus-visible) { outline: 0 !important; }
+.desktop-browser .live-tv-search input::placeholder { color: var(--text-tertiary); }
+.desktop-browser .live-tv-count { margin: 0; color: var(--text-secondary); font-size: 13px; line-height: 20px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.desktop-browser .live-tv-notice, .desktop-browser .live-tv-guide-failed { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 20px; color: var(--text-color); background: rgb(242 193 78 / 0.1); }
+.desktop-browser .live-tv-notice .material-icons { flex-shrink: 0; font-size: 18px; color: #f2c14e; }
+.desktop-browser .live-tv-guide-failed { justify-content: space-between; background: var(--desktop-surface); color: var(--text-secondary); }
+.desktop-browser .live-tv-list { display: grid; gap: 2px; }
+.desktop-browser .live-tv-sentinel { height: 1px; }
+.desktop-browser .live-tv-row { display: flex; align-items: center; gap: 4px; min-width: 0; border-radius: 14px; }
+.desktop-browser .live-tv-row:hover, .desktop-browser .live-tv-row:focus-within { background: var(--desktop-hover); }
+.desktop-browser .live-tv-row-play { display: flex; flex: 1; align-items: center; gap: 14px; min-width: 0; min-height: 68px; padding: 8px 12px; border: 0; border-radius: 14px; text-align: left; color: var(--text-color); background: transparent; }
+.desktop-browser .live-tv-number { flex: 0 0 40px; text-align: right; font-size: 13px; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.desktop-browser .live-tv-logo { position: relative; display: grid; place-items: center; flex: 0 0 64px; height: 44px; overflow: hidden; border-radius: 10px; color: var(--text-secondary); background: var(--card-bg); font-size: 16px; font-weight: 600; }
+.desktop-browser .live-tv-logo img { position: absolute; inset: 0; width: 100%; height: 100%; padding: 5px; object-fit: contain; background: var(--card-bg); }
+.desktop-browser .live-tv-row-copy { display: grid; flex: 1; gap: 3px; min-width: 0; }
+.desktop-browser .live-tv-title-line { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.desktop-browser .live-tv-row-copy strong, .desktop-browser .live-tv-now, .desktop-browser .live-tv-next { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.desktop-browser .live-tv-row-copy strong { font-size: 15px; line-height: 20px; font-weight: 600; }
+.desktop-browser .live-tv-guide { display: grid; gap: 4px; min-width: 0; }
+.desktop-browser .live-tv-guide:empty { display: none; }
+.desktop-browser .live-tv-now { font-size: 13px; line-height: 18px; color: var(--text-secondary); }
+.desktop-browser .live-tv-next { font-size: 12px; line-height: 16px; color: var(--text-tertiary); }
+.desktop-browser .live-tv-progress { display: block; width: min(280px, 100%); height: 3px; overflow: hidden; border-radius: 2px; background: rgb(255 255 255 / 0.14); }
+.desktop-browser .live-tv-progress span { display: block; height: 100%; border-radius: 2px; background: var(--secondary-color); }
+.desktop-browser .live-tv-tag { flex-shrink: 0; padding: 3px 8px; border-radius: 999px; font-size: 11px; line-height: 16px; color: var(--text-secondary); background: rgb(255 255 255 / 0.08); }
+.desktop-browser .live-tv-star { display: grid; place-items: center; flex: 0 0 44px; height: 44px; margin-right: 8px; border: 0; border-radius: 12px; color: var(--text-tertiary); background: transparent; }
+.desktop-browser .live-tv-star:hover { background: var(--desktop-hover); color: var(--text-color); }
+.desktop-browser .live-tv-star.is-on { color: var(--secondary-color); }
+.desktop-browser .live-tv-star .material-icons { font-size: 22px; }
+.desktop-browser .live-tv-list-empty { margin: 32px 0; text-align: center; color: var(--text-secondary); font-size: 14px; line-height: 20px; }
+.desktop-browser .live-tv-card { display: grid; justify-items: center; gap: 16px; max-width: 560px; margin: 48px auto; padding: 32px; border-radius: 20px; text-align: center; background: var(--desktop-surface); }
+.desktop-browser .live-tv-card-glyph { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; color: var(--secondary-color); background: var(--desktop-selected); }
+.desktop-browser .live-tv-card.is-bad .live-tv-card-glyph { color: #ff9a8f; background: rgb(255 154 143 / 0.12); }
+.desktop-browser .live-tv-card-glyph .material-icons { font-size: 28px; }
+.desktop-browser .live-tv-card h2 { margin: 0 0 8px; font-size: 20px; line-height: 28px; font-weight: 600; }
+.desktop-browser .live-tv-card p { margin: 0; font-size: 14px; line-height: 22px; color: var(--text-secondary); }
+.desktop-browser .live-tv-card-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.desktop-browser .live-tv-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border: 0; border-radius: 12px; color: var(--text-color); background: rgb(255 255 255 / 0.08); font-size: 14px; line-height: 20px; font-weight: 600; text-decoration: none; }
+.desktop-browser .live-tv-button:hover { background: rgb(255 255 255 / 0.14); }
+.desktop-browser .live-tv-button-primary, .desktop-browser .live-tv-button-primary:hover { color: var(--on-secondary); background: var(--secondary-color); }
+.desktop-browser .live-tv-button .material-icons { font-size: 18px; }
+.desktop-browser .live-tv-skeleton-label { margin: 0 0 16px; color: var(--text-secondary); font-size: 14px; line-height: 20px; }
+.desktop-browser .live-tv-skeleton-row { display: flex; align-items: center; gap: 14px; min-height: 68px; padding: 8px 12px; animation: live-tv-pulse 1.4s ease-in-out infinite; }
+.desktop-browser .live-tv-skeleton-logo { flex: 0 0 64px; height: 44px; border-radius: 10px; background: var(--card-bg); }
+.desktop-browser .live-tv-skeleton-lines { display: grid; flex: 1; gap: 8px; }
+.desktop-browser .live-tv-skeleton-lines span { height: 12px; width: min(320px, 70%); border-radius: 6px; background: var(--card-bg); }
+.desktop-browser .live-tv-skeleton-lines span + span { width: min(200px, 45%); height: 10px; }
+@keyframes live-tv-pulse { 50% { opacity: 0.45; } }
+@media (prefers-reduced-motion: reduce) { .desktop-browser .live-tv-skeleton-row { animation: none; } }
+@media (max-width: 900px) {
+  .desktop-browser .live-tv-browser { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .desktop-browser .live-tv-groups { position: static; display: flex; gap: 8px; max-height: none; padding: 2px; overflow-x: auto; overflow-y: hidden; border-radius: 0; background: transparent; overscroll-behavior-x: contain; }
+  .desktop-browser .live-tv-group { flex: 0 0 auto; max-width: 70vw; min-height: 40px; padding: 8px 14px; border-radius: 999px; background: var(--desktop-surface); }
+  .desktop-browser .live-tv-group-name { flex: 0 1 auto; }
+}
+@media (max-width: 600px) {
+  .desktop-browser .live-tv-main { padding: calc(env(safe-area-inset-top) + 24px) 16px calc(env(safe-area-inset-bottom) + 104px); }
+  .desktop-browser .live-tv-heading { margin-bottom: 16px; }
+  .desktop-browser .live-tv-heading h1 { font-size: 24px; line-height: 32px; }
+  .desktop-browser .live-tv-playlists { margin-bottom: 16px; }
+  .desktop-browser .live-tv-toolbar { flex-wrap: wrap; gap: 8px; }
+  .desktop-browser .live-tv-search { flex-basis: 100%; max-width: none; }
+  .desktop-browser .live-tv-row-play { gap: 10px; min-height: 64px; padding: 8px 4px 8px 0; }
+  .desktop-browser .live-tv-number { flex-basis: 30px; font-size: 12px; }
+  .desktop-browser .live-tv-logo { flex-basis: 52px; height: 38px; }
+  .desktop-browser .live-tv-star { margin-right: 0; }
+  .desktop-browser .live-tv-card { margin: 24px auto; padding: 24px 20px; }
+  .desktop-browser .live-tv-guide-failed { flex-wrap: wrap; }
+}
