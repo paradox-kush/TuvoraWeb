@@ -3,6 +3,7 @@ import { LocalStore } from "../../core/storage/localStore.js";
 import { ProfileManager } from "../../core/profile/profileManager.js";
 import { AddonApi } from "../remote/api/addonApi.js";
 import { buildConfiguredAddonEntry } from "../../core/addons/addonRuntimeState.js";
+import { withDeadline } from "../../core/sports/boundedLoad.js";
 
 const ADDON_URLS_KEY = "installedAddonUrls";
 const ADDON_DISPLAY_NAMES_KEY = "installedAddonDisplayNames";
@@ -10,6 +11,10 @@ const ADDON_ENABLED_STATES_KEY = "installedAddonEnabledStates";
 const PROFILES_KEY = "profiles";
 const PROFILE_SCOPED_VERSION = 1;
 const MANIFEST_SUFFIX = "/manifest.json";
+// A manifest that has not answered by now never will in a useful time: a LAN add-on seen from
+// outside its network, or a dead server, otherwise holds Home (and the profile overlay waiting
+// on Home) for as long as the connection hangs. It fails like any other unreachable add-on.
+export const MANIFEST_DEADLINE_MS = 8000;
 const DEFAULT_ADDON_URLS = ["https://v3-cinemeta.strem.io", "https://opensubtitles-v3.strem.io"];
 
 export class AddonRepository {
@@ -333,7 +338,10 @@ export class AddonRepository {
     }
 
     const request = (async () => {
-      const result = await safeApiCall(() => AddonApi.getManifest(manifestUrl));
+      const deadlineMs = Number(options?.deadlineMs) > 0 ? Number(options.deadlineMs) : MANIFEST_DEADLINE_MS;
+      const result = await safeApiCall(() =>
+        withDeadline((signal) => AddonApi.getManifest(manifestUrl, { signal }), deadlineMs)
+      );
       if (result.status === "success") {
         const addon = this.mapManifest(result.data, cleanBaseUrl);
         this.manifestCache.set(cleanBaseUrl, addon);

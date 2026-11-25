@@ -10,6 +10,7 @@ import { NuvioDialog } from "../../ui/components/nuvioDialog.js";
 import { detailWatchedEnrichmentService } from "../../data/repository/detailWatchedEnrichmentService.js";
 import { resolveExperienceRoute } from "./experienceModeRouting.js";
 import { renderLoadingIndicator } from "../../ui/components/loadingIndicator.js";
+import { LoadTimeoutError, withDeadline } from "../sports/boundedLoad.js";
 import { HomeScreen } from "../../ui/screens/home/homeScreen.js";
 import {
   removeBrowserProfileAvatar,
@@ -123,6 +124,7 @@ function getProfileInitial(name) {
 // Home's own DOM/layout, so neither page's shape changes because of it.
 const PROFILE_ACTIVATION_OVERLAY_CLASS = "profile-activation-transition-overlay";
 const PROFILE_ACTIVATION_OVERLAY_HIDE_MS = 220;
+const PROFILE_ACTIVATION_OVERLAY_DEADLINE_MS = 10000;
 
 function showProfileActivationTransitionOverlay() {
   if (typeof document === "undefined") {
@@ -2350,16 +2352,30 @@ export const ProfileSelectionScreen = {
       // the route mounts — otherwise the overlay disappears early and Home's
       // own loading skeleton takes over for the remainder of the fetch,
       // which reads as two different loading states stacked back to back.
-      const criticalHydration = await criticalHydrationPromise;
-      if (HomeScreen.initialLoadPromise) {
-        await HomeScreen.initialLoadPromise;
+      // The overlay holds its own deadline: past it, Home's own loading state takes over
+      // and the work carries on underneath (CLAUDE.md "every loading state has a deadline").
+      const homeReady = (async () => {
+        const hydration = await criticalHydrationPromise;
+        if (HomeScreen.initialLoadPromise) {
+          await HomeScreen.initialLoadPromise;
+        }
+        return hydration;
+      })();
+      const requestBackgroundSync = (criticalHydration) => {
+        if (criticalHydration?.current) {
+          void StartupSyncService.requestSyncNow({ criticalHydration }).catch((error) => {
+            console.warn("Profile background sync failed", error);
+          });
+        }
+      };
+      try {
+        requestBackgroundSync(await withDeadline(() => homeReady, PROFILE_ACTIVATION_OVERLAY_DEADLINE_MS));
+      } catch (error) {
+        if (!(error instanceof LoadTimeoutError)) throw error;
+        logProfileSelectionTiming("profile-activation-overlay-deadline", activationStartedAt);
+        homeReady.then(requestBackgroundSync, (lateError) => console.warn("Profile hydration failed", lateError));
       }
       hideProfileActivationTransitionOverlay(transitionOverlay);
-      if (criticalHydration.current) {
-        void StartupSyncService.requestSyncNow({ criticalHydration }).catch((error) => {
-          console.warn("Profile background sync failed", error);
-        });
-      }
     } catch (error) {
       console.warn("Failed to activate profile", error);
       hideProfileActivationTransitionOverlay(transitionOverlay);

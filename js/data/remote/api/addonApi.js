@@ -1,9 +1,10 @@
 import { httpRequest } from "../../../core/network/httpClient.js";
 
 export const AddonApi = {
-  async getManifest(url) {
+  async getManifest(url, { signal } = {}) {
     return httpRequest(url, {
-      includeSessionAuth: false
+      includeSessionAuth: false,
+      ...(signal ? { signal } : {})
     });
   },
 
