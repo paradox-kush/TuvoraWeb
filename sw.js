@@ -42,6 +42,7 @@ const APP_SHELL = [
   "./assets/icons/sidebar_home.svg",
   "./assets/icons/sidebar_search.svg",
   "./assets/icons/sidebar_library.svg",
+  "./assets/icons/sidebar_live_tv.svg",
   "./assets/icons/sidebar_settings.svg",
   "./assets/fonts/jetbrains_sans_regular.ttf",
   "./assets/fonts/jetbrains_sans_semibold.ttf",

@@ -9,6 +9,7 @@ const ROUTE_TITLES = {
   discover: "Discover",
   library: "Library",
   calendar: "Calendar",
+  liveTv: "Live TV",
   settings: "Settings",
   profileSelection: "Profiles",
   authSignIn: "Sign In",

@@ -23,6 +23,12 @@ const NAVIGATION_ITEMS = [
     icon: "assets/icons/sidebar_library.svg"
   },
   {
+    route: "liveTv",
+    // English only for now, like Calendar and Watch Party: the strings files have no Live TV key.
+    fallback: "Live TV",
+    icon: "assets/icons/sidebar_live_tv.svg"
+  },
+  {
     route: "settings",
     labelKey: "sidebar.settings",
     fallback: "Settings",
@@ -81,7 +87,7 @@ export function renderDesktopNavigation({ selectedRoute = "", profile = null } =
     <nav class="desktop-navigation" aria-label="Primary navigation">
       <div class="desktop-navigation-scroll">
         ${NAVIGATION_ITEMS.map((item) => {
-          const label = t(item.labelKey, item.fallback);
+          const label = item.labelKey ? t(item.labelKey, item.fallback) : item.fallback;
           const isActive = item.route === currentRoute;
           return `
             <button class="desktop-navigation-item${isActive ? " is-active" : ""}"
