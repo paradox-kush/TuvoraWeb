@@ -55,7 +55,7 @@ export async function runBoundedLoad(work, { deadlineMs = LiveDeadlines.Channels
       return {
         state: "failed",
         value: null,
-        failure: classifyLoadFailure({ error, httpStatus: Number(error?.httpStatus) || 0, timedOut })
+        failure: classifyLoadFailure({ error, httpStatus: Number(error?.httpStatus || error?.status) || 0, timedOut })
       };
     }
     return isEmptyValue(outcome.value)

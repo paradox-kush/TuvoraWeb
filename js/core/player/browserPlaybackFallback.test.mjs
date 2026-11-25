@@ -141,3 +141,15 @@ test("a stall with no error code is offered the app and players as an unknown br
   assert.equal(failure.reason, BrowserPlaybackFailure.Unknown);
   assert.match(failure.message, /didn't play in the browser/);
 });
+
+test("a live channel offers no app link: the apps have no live route yet, so none is invented", () => {
+  const actions = fallbackActionsFor({
+    reason: BrowserPlaybackFailure.InsecureSource,
+    players: ["system"],
+    contentType: "channel",
+    contentId: "xtream:pk:live:42",
+    mediaUrl: "http://edge.example/42.m3u8"
+  });
+  assert.equal(actions.some((action) => action.id === "open-app"), false);
+  assert.equal(actions.some((action) => action.id === "copy-link"), true);
+});
