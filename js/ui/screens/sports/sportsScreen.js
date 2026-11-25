@@ -4,6 +4,7 @@
 import { Router } from "../../navigation/router.js";
 import { ScreenUtils } from "../../navigation/screen.js";
 import { getSidebarProfileState } from "../../components/sidebarNavigation.js";
+import { paintThenFillProfile, replaceNavigation } from "./profileChip.js";
 import { bindDesktopNavigationEvents, renderDesktopNavigation } from "../../components/desktopNavigation.js";
 import { ProfileManager } from "../../../core/profile/profileManager.js";
 import { AuthManager } from "../../../core/auth/authManager.js";
@@ -29,7 +30,7 @@ const errorText = error => (error?.name === "LoadTimeoutError"
   : (navigator.onLine === false ? "You're offline." : "Couldn't reach the sports service."));
 
 export const SportsScreen = {
-  async mount(params = {}, context = {}) {
+  mount(params = {}, context = {}) {
     const generation = this.generation = (this.generation || 0) + 1;
     this.container = document.getElementById("sports");
     ScreenUtils.show(this.container);
@@ -46,14 +47,21 @@ export const SportsScreen = {
     this.refreshing = false;
     this.pendingLeague = null;
     this.active = true;
-    const profile = await getSidebarProfileState().catch(() => null);
-    if (generation !== this.generation) return;
-    this.container.innerHTML = `
-      <div class="sports-screen">
-        ${renderDesktopNavigation({ selectedRoute: "sports", profile })}
-        <main class="sports-main" id="main-content"></main>
-      </div>`;
-    bindDesktopNavigationEvents(this.container);
+    // First paint never waits on the profile chip (it can sit behind Home's requests for ~40 s):
+    // the shell goes up now with the fallback chip and the real one fills in when it arrives.
+    void paintThenFillProfile({
+      paint: profile => {
+        this.container.innerHTML = `
+          <div class="sports-screen">
+            ${renderDesktopNavigation({ selectedRoute: "sports", profile })}
+            <main class="sports-main" id="main-content"></main>
+          </div>`;
+        bindDesktopNavigationEvents(this.container);
+      },
+      loadProfile: () => getSidebarProfileState(),
+      fill: profile => replaceNavigation(this.container, renderDesktopNavigation({ selectedRoute: "sports", profile }), bindDesktopNavigationEvents),
+      isCurrent: () => this.active && generation === this.generation
+    });
     this.main = this.container.querySelector(".sports-main");
     this.container.onclick = event => this.onClick(event);
     this.container.addEventListener("error", dropBrokenImage, true);
