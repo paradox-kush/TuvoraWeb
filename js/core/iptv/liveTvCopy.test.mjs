@@ -49,3 +49,9 @@ test("no copy ever contains an address", () => {
   ].join(" ");
   assert.equal(/:\/\//.test(all), false);
 });
+
+test("blocked copy does not claim more than the browser can know; offline says so", () => {
+  assert.match(failureCopy(LoadFailure.BlockedBySource).body, /or is offline/);
+  assert.match(failureCopy(LoadFailure.Offline).title, /offline/i);
+  assert.equal(failureCopy(LoadFailure.Offline).offerApp, false);
+});

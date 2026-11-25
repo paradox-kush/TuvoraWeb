@@ -87,3 +87,8 @@ test("playlist status summarises what the viewer can do", () => {
   assert.equal(summarizePlaylistStatus({ access: tryAccess, load: { state: "loaded", secureShare: 0 } }), PlaylistStatus.ListsOnly);
   assert.equal(summarizePlaylistStatus({ access: tryAccess, load: { state: "empty" } }), PlaylistStatus.Empty);
 });
+
+test("a fetch TypeError while this device is offline is Offline, not the provider blocking browsers", () => {
+  assert.equal(classifyLoadFailure({ error: new TypeError("Failed to fetch"), online: false }), LoadFailure.Offline);
+  assert.equal(classifyLoadFailure({ error: new TypeError("Failed to fetch"), online: true }), LoadFailure.BlockedBySource);
+});

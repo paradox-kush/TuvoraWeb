@@ -15,7 +15,8 @@ export const LoadFailure = Object.freeze({
   BlockedBySource: "blocked-by-source",
   SourceError: "source-error",
   Timeout: "timeout",
-  BadResponse: "bad-response"
+  BadResponse: "bad-response",
+  Offline: "offline"
 });
 
 export const ChannelPlayback = Object.freeze({
@@ -71,11 +72,12 @@ export function classifyPlaylistAccess(playlist = {}, pageProtocol = "https:") {
  * After a request failed. A cross-site refusal hides everything from the page, so it
  * surfaces as a bare TypeError: that is the browser blocking, not "no channels".
  */
-export function classifyLoadFailure({ error = null, httpStatus = 0, timedOut = false } = {}) {
+export function classifyLoadFailure({ error = null, httpStatus = 0, timedOut = false, online = globalThis.navigator?.onLine ?? true } = {}) {
   if (timedOut || error?.name === "AbortError" || error?.name === "TimeoutError") return LoadFailure.Timeout;
   if (Number(httpStatus) >= 400) return LoadFailure.SourceError;
   if (error instanceof SyntaxError) return LoadFailure.BadResponse;
-  if (error instanceof TypeError) return LoadFailure.BlockedBySource;
+  // A TypeError is also what a dead network gives; only an online device can blame the provider.
+  if (error instanceof TypeError) return online === false ? LoadFailure.Offline : LoadFailure.BlockedBySource;
   return error ? LoadFailure.BadResponse : LoadFailure.BlockedBySource;
 }
 

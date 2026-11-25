@@ -33,7 +33,7 @@ function hashString(value) {
 }
 
 export function parseM3u(text = "") {
-  const source = String(text || "").replace(/^﻿/, "");
+  const source = String(text || "").replace(/^\uFEFF/, "");
   const lines = source.split(/\r?\n/);
   const firstContent = lines.find((line) => line.trim()) || "";
   const valid = !source.trim() || /^#EXT/i.test(firstContent.trim());

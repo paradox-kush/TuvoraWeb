@@ -49,8 +49,8 @@ export function appOnlyCopy(reason) {
 
 const FAILURES = {
   [LoadFailure.BlockedBySource]: {
-    title: "This provider blocks web browsers",
-    body: "This provider doesn't allow web browsers to read its channel list. It plays in the Tuvora apps.",
+    title: "This provider can't be reached from a web browser",
+    body: "This provider doesn't allow web browsers to read its channel list, or is offline. It plays in the Tuvora apps.",
     offerApp: true
   },
   [LoadFailure.SourceError]: {
@@ -61,6 +61,11 @@ const FAILURES = {
   [LoadFailure.Timeout]: {
     title: "The provider took too long",
     body: "The provider didn't answer in time, so we stopped waiting.",
+    offerApp: false
+  },
+  [LoadFailure.Offline]: {
+    title: "You're offline",
+    body: "This device has no connection right now. Retry once you're back online.",
     offerApp: false
   },
   [LoadFailure.BadResponse]: {
