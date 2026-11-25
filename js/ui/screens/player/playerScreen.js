@@ -6212,6 +6212,8 @@ export const PlayerScreen = {
     const visible = this.isStartupErrorVisible();
     overlay.classList.toggle("hidden", !visible);
     overlay.setAttribute("aria-hidden", visible ? "false" : "true");
+    // The overlay has its own Go Back; the player's floating back arrow would be a second one.
+    this.container?.classList?.toggle("has-startup-error", visible);
     if (!visible) {
       overlay.innerHTML = "";
       return;
@@ -6233,7 +6235,7 @@ export const PlayerScreen = {
           <div class="player-startup-error-badge" aria-hidden="true">
             <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">${badgeIcon}</svg>
           </div>
-          <div class="player-startup-error-title">${gesture ? "Ready to play" : escapeHtml(t("player_error_title", {}, "Playback Error"))}</div>
+          <div class="player-startup-error-title">${gesture ? "Ready to play" : (this.startupFallbackActions || []).length ? "This one won't play here" : escapeHtml(t("player_error_title", {}, "Playback Error"))}</div>
           <div class="player-startup-error-message">${escapeHtml(message)}</div>
         </div>
         ${this.renderStartupFallbackButtons()}

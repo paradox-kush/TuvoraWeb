@@ -174,3 +174,16 @@ test("the tap-to-play prompt offers Play first and only Back beside it", () => {
   assert.deepEqual(layout.players, []);
   assert.deepEqual(ids(layout.quiet), ["back"]);
 });
+
+test("fallback messages state the reason only; the buttons carry the way out", () => {
+  for (const input of [
+    { mediaUrl: "http://p.example/a.ts" },
+    { mediaUrl: "https://p.example/a.m3u8", mediaErrorCode: 2 },
+    { mediaUrl: "https://p.example/a.mkv", mediaErrorCode: 3 },
+    { mediaUrl: "https://p.example/a.m3u8" }
+  ]) {
+    const { message } = classifyBrowserPlaybackFailure({ pageProtocol: "https:", ...input });
+    assert.ok(message, JSON.stringify(input));
+    assert.doesNotMatch(message, /Tuvora app|another player/, message);
+  }
+});

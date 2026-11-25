@@ -21343,3 +21343,8 @@ html[data-card-depth="true"][data-card-depth-trailers="true"] .detail-trailer-ca
   font-size: 0.75rem;
   font-weight: 600;
 }
+
+/* The error overlay has its own Go Back; hide the player's floating back arrow behind it. */
+#player.has-startup-error .player-desktop-back-button {
+  visibility: hidden;
+}

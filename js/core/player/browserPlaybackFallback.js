@@ -24,13 +24,13 @@ const BROWSER_LIMITS = new Set([
 
 const MESSAGES = Object.freeze({
   [BrowserPlaybackFailure.InsecureSource]:
-    "This source is not secure (http), and browsers block insecure video on a secure page. Open it in the Tuvora app or another player.",
+    "This source is not secure (http), and browsers block insecure video on a secure page.",
   [BrowserPlaybackFailure.BlockedBySource]:
-    "This source doesn't allow playback in a web browser. Open it in the Tuvora app or another player.",
+    "This source doesn't allow playback in a web browser.",
   [BrowserPlaybackFailure.UnsupportedFormat]:
-    "Your browser can't play this video format. Open it in the Tuvora app or another player.",
+    "Your browser can't play this video format.",
   [BrowserPlaybackFailure.SourceError]: "",
-  [BrowserPlaybackFailure.Unknown]: "This stream didn't play in the browser. Try the Tuvora app or another player."
+  [BrowserPlaybackFailure.Unknown]: "This stream didn't play in the browser."
 });
 
 function protocolOf(url) {
