@@ -17,6 +17,12 @@ const NAVIGATION_ITEMS = [
     icon: "assets/icons/sidebar_search.svg"
   },
   {
+    route: "sports",
+    labelKey: "sidebar.sports",
+    fallback: "Sports",
+    icon: "assets/icons/sidebar_sports.svg"
+  },
+  {
     route: "library",
     labelKey: "sidebar.library",
     fallback: "Library",

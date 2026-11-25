@@ -50,6 +50,13 @@ export function badgeProgress(sport, rawProgress) {
   return value || null;
 }
 
+/** The livescore feed's status for period sports is the period itself ("Q2", "P3", "OT", "HT"). */
+export function periodFromStatus(sport, status) {
+  if (!PERIOD_SPORTS.has(String(sport ?? "").toLowerCase())) return null;
+  const value = String(status ?? "").trim().toUpperCase();
+  return /^(Q[1-4]|P[1-3]|[1-4](ST|ND|RD|TH)|OT\d?|HT|BT|SO)$/.test(value) ? value : null;
+}
+
 export const EMPTY_LIVE_STATE = Object.freeze({ liveEventIds: new Set(), livescoreSports: new Set(), liveScores: new Map() });
 
 /** A radar-fixtures response's livescore lanes as live state. An EMPTY lane is not coverage. */

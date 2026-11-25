@@ -1,7 +1,7 @@
 // Pure view-model for the Sports hub: repository state + clock in, plain card data out.
 // The screen renders these; nothing here touches the DOM or the network.
 import { displayTitle, fixtureKey, hasTeams, isDateOnly, isUpcomingWindow, roundLabel, startMs } from "./sportsFixtures.js";
-import { badgeProgress, gameState } from "./liveStatus.js";
+import { badgeProgress, gameState, periodFromStatus } from "./liveStatus.js";
 import { scoreSlots } from "./scoreSpoiler.js";
 import { collectFixtures, dayKeyFor, groupByDay, localDayOf } from "./sportsCalendar.js";
 
@@ -44,7 +44,7 @@ export function buildCard(fixture, ctx) {
     away: { name: String(fixture.away || ""), badge: safeUrl(fixture.awayBadge), score: slots.away },
     leader: slots.leader,
     scoreHidden: slots.hidden,
-    progress: state === "live" ? badgeProgress(fixture.sport, liveScore?.progress) : null,
+    progress: state === "live" ? badgeProgress(fixture.sport, liveScore?.progress) ?? periodFromStatus(fixture.sport, liveScore?.status) : null,
     kickoffMs: startMs(fixture),
     dateOnly: isDateOnly(fixture),
     day: dayKeyFor(fixture, timeZone),
